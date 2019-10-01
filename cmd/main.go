@@ -2,11 +2,11 @@ package main
 
 import (
 	"fadmin/router"
-	"fmt"
+	"flag"
 )
 
 func main() {
-	fmt.Println("hello world")
-	router.InitRouter("config/config.json")
+	path := flag.String("-c", "config/config.json", "config.conf")
+	router.InitRouter(*path)
 
 }
