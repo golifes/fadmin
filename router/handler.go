@@ -8,5 +8,6 @@ import (
 type Engine struct {
 	*gin.Engine
 	*adminc.HttpAdminHandler
+	Port func() string
 	//*wx.HttpWxHandler
 }

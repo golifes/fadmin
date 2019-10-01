@@ -20,10 +20,14 @@ type Config struct {
 		MaxOpen int
 		MaxIdle int
 	}
+	App struct {
+		Port string
+	}
 }
 
 var (
-	Db *sql.DB
+	Db   *sql.DB
+	Port string
 	//RedisClient *redis.Client
 	//EsClient    *elastic.Client
 )
@@ -31,6 +35,7 @@ var (
 func NewConfig(path string) (config Config) {
 	Load(path, &config)
 	config.loadDb()
+	config.httpServer()
 	//config.LoadRedis()
 	//config.LoadElastic()
 	return
@@ -40,6 +45,9 @@ func NewDb() *sql.DB {
 	return Db
 }
 
+func NewHttpPort() string {
+	return Port
+}
 func (c *Config) loadDb() {
 	fmt.Println(c.Db)
 	var err error
@@ -57,4 +65,8 @@ func (c *Config) loadDb() {
 	}
 	Db.SetMaxIdleConns(c.Db.MaxIdle)
 	Db.SetMaxOpenConns(c.Db.MaxOpen)
+}
+
+func (c *Config) httpServer() {
+	Port = c.App.Port
 }
