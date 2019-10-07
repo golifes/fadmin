@@ -6,7 +6,11 @@ import (
 
 func TestExec(t *testing.T) {
 	cols := []string{"w.a", "w.b"}
-	m := map[string]string{" from  ": " wx w "}
-	sql := Exec(cols, m)
+	db := []string{" wx w "}
+	queryMap := make(map[string]interface{})
+	queryMap[" w.a = "] = 1
+	queryMap[" w.b <= "] = 2
+	queryMap[" w.c != "] = "aaa"
+	sql := Exec("delete ", cols, db, queryMap)
 	t.Log(sql)
 }

@@ -10,11 +10,11 @@ type Dao struct {
 	db *sql.DB
 }
 
-func (d Dao) Query(db map[string]string, cols []string, query map[string]interface{}, pn, ps int) {
+func (d Dao) Query(db []string, cols []string, query map[string]interface{}, pn, ps int, model interface{}) (interface{}, int) {
 	panic("implement me")
 }
 
-func (d Dao) Count(db map[string]string, query map[string]string) {
+func (d Dao) Count(db []string, query map[string]string) (int, int) {
 	panic("implement me")
 }
 
