@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func Exec(op string, cols []string, db []string, queryMap map[string]interface{}) string {
+func Exec(op string, db []string, cols []string, queryMap map[string]interface{}) string {
 	var buf bytes.Buffer
 
 	buf.WriteString(op)
