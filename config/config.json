@@ -3,7 +3,8 @@
     "Host": "127.0.0.1",
     "Port": 3306,
     "User": "root",
-    "Pwd": "1234567",
+    "Db": "fadmin",
+    "Pwd": "abc",
     "MaxOpen": 256,
     "MaxIdle": 150
   },
