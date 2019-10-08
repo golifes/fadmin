@@ -14,7 +14,6 @@ func InitRouter(path string) Engine {
 	}}
 	u := r.Group("/user")
 	admin(u)
-	fmt.Println("---->", r.Port())
 	err := r.Engine.Run(r.Port())
 	fmt.Println(err)
 	return r

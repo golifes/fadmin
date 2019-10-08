@@ -49,14 +49,13 @@ func NewHttpPort() string {
 	return Port
 }
 func (c *Config) loadDb() {
-	fmt.Println(c.Db)
 	var err error
 	dns := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		c.Db.User,
 		c.Db.Pwd,
 		c.Db.Host,
 		c.Db.Db)
-
+	fmt.Println(dns)
 	Db, err = sql.Open("mysql", dns)
 
 	ping := Db.Ping()

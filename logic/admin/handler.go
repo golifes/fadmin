@@ -28,7 +28,8 @@ type Logic struct {
 func (l Logic) Query(ctx context.Context,
 	db []string, cols []string, query map[string]interface{}, pn, ps int, model interface{},
 ) (interface{}, int) {
-	return l.Db.Query(ctx, db, cols, query, pn, ps, model)
+	return nil, 0
+	//return l.Db.Query(ctx, db, cols, query, pn, ps, model)
 }
 
 func (l Logic) Insert(ctx context.Context, op string, db []string, rows map[string]interface{}) {

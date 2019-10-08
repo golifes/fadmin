@@ -2,10 +2,12 @@ package tools
 
 import (
 	"bytes"
+	"fmt"
+	"log"
 	"strings"
 )
 
-func Select(db []string, cols []string, fields []string) string {
+func Select(db []string, cols []string, fields []string, pn, ps int, order string) string {
 	var buf bytes.Buffer
 	buf.WriteString(" select ")
 	buf.WriteString(strings.Join(cols, ","))
@@ -18,6 +20,30 @@ func Select(db []string, cols []string, fields []string) string {
 		buf.WriteString(v)
 		buf.WriteString(" ? ")
 	}
+
+	buf.WriteString(fmt.Sprintf(" limit %d,%d ", (pn-1)*ps, ps))
+	if order != "" {
+		buf.WriteString(" order by ")
+		buf.WriteString(order)
+	}
+	log.Printf(buf.String())
+	return buf.String()
+}
+
+func Count(db []string, fields []string) string {
+	var buf bytes.Buffer
+	buf.WriteString(" select ")
+	buf.WriteString(" count(1) ")
+	buf.WriteString(" from ")
+	buf.WriteString(strings.Join(db, ","))
+	if fields != nil {
+		buf.WriteString(" where ")
+	}
+	for _, v := range fields {
+		buf.WriteString(v)
+		buf.WriteString(" ? ")
+	}
+
 	return buf.String()
 }
 func Delete(db string, fields []string) string {
@@ -32,6 +58,7 @@ func Delete(db string, fields []string) string {
 		buf.WriteString(v)
 		buf.WriteString(" ? ")
 	}
+	log.Printf(buf.String())
 	return buf.String()
 }
 
@@ -50,6 +77,7 @@ func Update(db string, fields []string, query []string) string {
 		buf.WriteString(v)
 		buf.WriteString(" ? ")
 	}
+	log.Printf(buf.String())
 	return buf.String()
 }
 
@@ -70,6 +98,6 @@ func Insert(db string, fields []string) string {
 		}
 	}
 	buf.WriteString(" ) ")
-
+	log.Printf(buf.String())
 	return buf.String()
 }
