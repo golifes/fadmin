@@ -1,9 +1,9 @@
 package admin
 
 import (
+	"context"
 	"database/sql"
 	"fadmin/pkg/config"
-	"fadmin/tools"
 )
 
 type Dao struct {
@@ -11,13 +11,13 @@ type Dao struct {
 	db *sql.DB
 }
 
-func (d Dao) Query(db []string, cols []string, query map[string]interface{}, pn, ps int, model interface{}) (interface{}, int) {
-	exec := tools.Exec("select", db, cols, query)
-	d.query(exec)
-	return nil, 0
+func (d Dao) Query(ctx context.Context,
+	db []string, cols []string, query map[string]interface{}, pn, ps int, model interface{},
+) (interface{}, int) {
+	panic("implement me")
 }
 
-func (d Dao) Count(db []string, query map[string]string) (int, int) {
+func (d Dao) Count(ctx context.Context, db []string, query map[string]string) (int, int) {
 	panic("implement me")
 }
 
