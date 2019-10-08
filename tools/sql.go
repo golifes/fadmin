@@ -2,38 +2,74 @@ package tools
 
 import (
 	"bytes"
-	"fmt"
-	"reflect"
 	"strings"
 )
 
-func Exec(op string, db []string, cols []string, queryMap map[string]interface{}) string {
+func Select(db []string, cols []string, fields []string) string {
 	var buf bytes.Buffer
-
-	buf.WriteString(op)
+	buf.WriteString(" select ")
 	buf.WriteString(strings.Join(cols, ","))
 	buf.WriteString(" from ")
 	buf.WriteString(strings.Join(db, ","))
-
-	if queryMap != nil {
+	if fields != nil {
 		buf.WriteString(" where ")
 	}
-	count := 0
-	for k, v := range queryMap {
-		buf.WriteString(k)
-		switch v.(type) {
-		case int, int64:
-			buf.WriteString(fmt.Sprintf("%d", v))
-		case string:
-			buf.WriteString(v.(string))
-		case reflect.MapIter:
-			fmt.Println("not support")
-		}
-		if len(queryMap)-1 != count {
-			buf.WriteString(" and ")
-		}
-		count += 1
-
+	for _, v := range fields {
+		buf.WriteString(v)
+		buf.WriteString(" ? ")
 	}
+	return buf.String()
+}
+func Delete(db string, fields []string) string {
+	var buf bytes.Buffer
+	buf.WriteString(" delete from ")
+	buf.WriteString(db)
+
+	if fields != nil {
+		buf.WriteString(" where ")
+	}
+	for _, v := range fields {
+		buf.WriteString(v)
+		buf.WriteString(" ? ")
+	}
+	return buf.String()
+}
+
+//UPDATE table_name SET field1=new-value1, field2=new-value2
+func Update(db string, fields []string, query []string) string {
+	var buf bytes.Buffer
+	buf.WriteString(" update ")
+	buf.WriteString(db)
+	buf.WriteString(" set ")
+	for _, v := range fields {
+		buf.WriteString(v)
+		buf.WriteString(" ? ")
+	}
+	buf.WriteString(" where ")
+	for _, v := range query {
+		buf.WriteString(v)
+		buf.WriteString(" ? ")
+	}
+	return buf.String()
+}
+
+func Insert(db string, fields []string) string {
+	var buf bytes.Buffer
+	buf.WriteString(" insert into ")
+	buf.WriteString(db)
+	buf.WriteString(" ( ")
+	buf.WriteString(strings.Join(fields, ","))
+	buf.WriteString(" ) values ( ")
+	count := 0
+	for index, _ := range fields {
+		if index != count-1 {
+			buf.WriteString(" ? ")
+		} else {
+			buf.WriteString(" ? ")
+			buf.WriteString(",")
+		}
+	}
+	buf.WriteString(" ) ")
+
 	return buf.String()
 }
