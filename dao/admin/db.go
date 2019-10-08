@@ -11,6 +11,18 @@ type Dao struct {
 	db *sql.DB
 }
 
+func (d Dao) Insert(ctx context.Context, op string, db []string, rows map[string]interface{}) {
+	panic("implement me")
+}
+
+func (d Dao) Update(ctx context.Context, op string, db []string, rows map[string]interface{}) {
+	panic("implement me")
+}
+
+func (d Dao) Delete(ctx context.Context, op string, db []string, rows map[string]interface{}) {
+	panic("implement me")
+}
+
 func (d Dao) Query(ctx context.Context,
 	db []string, cols []string, query map[string]interface{}, pn, ps int, model interface{},
 ) (interface{}, int) {

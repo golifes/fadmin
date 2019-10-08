@@ -4,6 +4,7 @@ import "context"
 
 type DbHandler interface {
 	Counter
+	Handler
 }
 
 type Counter interface {
