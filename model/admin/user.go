@@ -12,11 +12,15 @@ type User struct {
 	Nick   string    `json:"name"  `
 	Pwd    string    `json:"pwd" `
 	Phone  string    `json:"phone"`
+	Email  string    `json:"email`
 	Status int       `json:"status"  `
 	CTime  time.Time `json:"ctime"  `
 	MTime  time.Time `json:"mtime"  `
 	Did    string    `json:"did"  ` //冗余字段，为了查询方便
 	Aid    string    `json:"adi"  `
+	Openid string    `json: "openid"` //微信小程序唯一标识
+	data   string    `json: "data"`   //备用字段
+
 }
 
 //需要其他的查询参数继续添加
