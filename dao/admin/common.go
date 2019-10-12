@@ -3,7 +3,7 @@ package admin
 import "fmt"
 
 func (d Dao) query(sql string, fields []string, values []interface{}, model interface{}) (interface{}, int) {
-	if rows, err := d.db.Query(sql, values); err != nil {
+	if rows, err := d.DB().Query(sql, values); err != nil {
 		return nil, 0
 	} else {
 		cols := make([]interface{}, len(fields))
@@ -29,7 +29,7 @@ func (d Dao) query(sql string, fields []string, values []interface{}, model inte
 }
 
 func (d Dao) count(sql string) int {
-	row := d.db.QueryRow(sql)
+	row := d.DB().QueryRow(sql)
 	var count int64
 	if err := row.Scan(&count); err != nil {
 		return 0
@@ -38,7 +38,7 @@ func (d Dao) count(sql string) int {
 	}
 }
 func (d Dao) insert(sql string, values []interface{}) int {
-	stmt, err := d.db.Prepare(sql)
+	stmt, err := d.DB().Prepare(sql)
 	defer stmt.Close()
 	if err != nil {
 		return 0
@@ -50,5 +50,4 @@ func (d Dao) insert(sql string, values []interface{}) int {
 	} else {
 		return int(rowsAffected)
 	}
-
 }

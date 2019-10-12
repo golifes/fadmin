@@ -1,10 +1,10 @@
 package config
 
 import (
-	"database/sql"
 	"fmt"
 	//"github.com/go-redis/redis"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/golifes/sqlo"
 	//"github.com/olivere/elastic/v7"
 	//"github.com/xormplus/xorm"
 )
@@ -26,8 +26,8 @@ type Config struct {
 }
 
 var (
-	Db   *sql.DB
-	Port string
+	engine *sqlo.Engine
+	Port   string
 	//RedisClient *redis.Client
 	//EsClient    *elastic.Client
 )
@@ -41,8 +41,8 @@ func NewConfig(path string) (config Config) {
 	return
 }
 
-func NewDb() *sql.DB {
-	return Db
+func NewDb() *sqlo.Engine {
+	return engine
 }
 
 func NewHttpPort() string {
@@ -56,14 +56,14 @@ func (c *Config) loadDb() {
 		c.Db.Host,
 		c.Db.Db)
 	fmt.Println(dns)
-	Db, err = sql.Open("mysql", dns)
 
-	ping := Db.Ping()
+	engine, err := sqlo.Connect(dns)
+	ping := engine.Ping()
 	if ping != nil || err != nil {
 		panic(ping)
 	}
-	Db.SetMaxIdleConns(c.Db.MaxIdle)
-	Db.SetMaxOpenConns(c.Db.MaxOpen)
+	engine.DB().SetMaxIdleConns(c.Db.MaxIdle)
+	engine.DB().SetMaxOpenConns(c.Db.MaxOpen)
 }
 
 func (c *Config) httpServer() {

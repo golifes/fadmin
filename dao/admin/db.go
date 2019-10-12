@@ -2,24 +2,23 @@ package admin
 
 import (
 	"context"
-	"database/sql"
 	"fadmin/model/admin"
 	"fadmin/pkg/config"
-	"fadmin/tools"
+	"github.com/golifes/sqlo"
 )
 
 type Dao struct {
-	c  config.Config
-	db *sql.DB
+	config.Config
+	*sqlo.Engine
 }
 
 func (d Dao) Query(ctx context.Context,
-	db []string, cols []string, fields []string, values []interface{}, pn, ps int, model interface{},
+	table string, col []string, fields []string, values []interface{}, pn, ps int, model interface{},
 ) (interface{}, int) {
-	s := tools.Select(db, cols, fields, pn, ps, " id desc")
+	sql := d.Select(col...).From(table).OrderBy(" id desc").Limit(ps, pn).String()
 	switch model.(type) {
 	case admin.User:
-		return d.query(s, fields, values, admin.User{})
+		return d.query(sql, fields, values, admin.User{})
 
 	}
 	return nil, 0
@@ -42,5 +41,5 @@ func (d Dao) Delete(ctx context.Context, db string, fields []string, values []in
 }
 
 func NewDb(path string) *Dao {
-	return &Dao{db: config.Db, c: config.NewConfig(path)}
+	return &Dao{config.NewConfig(path), config.NewDb()}
 }
