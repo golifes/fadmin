@@ -7,16 +7,13 @@ import "time"
 */
 type User struct {
 	//Id  int64
-	Id     int64     `json:"id"  `
-	Name   string    `json:"name"  `
-	Nick   string    `json:"name"  `
-	Pwd    string    `json:"pwd" `
-	Phone  string    `json:"phone"`
-	Status int       `json:"status"  `
-	CTime  time.Time `json:"ctime"  `
-	MTime  time.Time `json:"mtime"  `
-	Did    string    `json:"did"  ` //冗余字段，为了查询方便
-	Aid    string    `json:"adi"  `
+	Id    int64     `json:"id"  `    //主键id
+	Name  string    `json:"name"  `  //用户名
+	Nick  string    `json:"name"  `  //昵称
+	Pwd   string    `json:"pwd" `    //密码
+	Phone string    `json:"phone"`   //电话号码
+	CTime time.Time `json:"ctime"  ` //创建时间
+	MTime time.Time `json:"mtime"  ` //更新时间
 }
 
 //需要其他的查询参数继续添加

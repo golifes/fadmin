@@ -6,9 +6,9 @@ import "time"
 域
 */
 type Domain struct {
-	Id     int64     `json:"id"  `
-	Name   string    `json:"name"  `
-	Status int       `json:"status"  `
-	Ctime  time.Time `json:"ctime"  `
-	Mtime  time.Time `json:"mtime"  `
+	Id     int64     `json:"id"  `     //域id
+	Name   string    `json:"name"  `   //名称
+	Status int       `json:"status"  ` //状态 ,停用启用
+	Ctime  time.Time `json:"ctime"  `  //创建时间
+	Mtime  time.Time `json:"mtime"  `  //更新时间
 }
