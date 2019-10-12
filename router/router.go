@@ -2,6 +2,7 @@ package router
 
 import (
 	adminc "fadmin/http/controller/admin"
+	"fadmin/http/middleware"
 	"fadmin/pkg/config"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -12,6 +13,7 @@ func InitRouter(path string) Engine {
 
 		return config.NewHttpPort()
 	}}
+	r.Use(middleware.DummyMiddleware())
 	u := r.Group("/user")
 	admin(u)
 	err := r.Engine.Run(r.Port())
