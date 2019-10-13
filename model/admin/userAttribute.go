@@ -6,5 +6,5 @@ package admin
 
 type UserAttr struct {
 	Uid  int64  `json:"uid"  `
-	Attr string `json:"arrt"` //数据库存json数据
+	Attr string `json:"attr"` //数据库存json数据
 }
