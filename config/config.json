@@ -4,7 +4,7 @@
     "Port": 3306,
     "User": "root",
     "Db": "fadmin",
-    "Pwd": "abc",
+    "Pwd": "qinliang",
     "MaxOpen": 256,
     "MaxIdle": 150
   },

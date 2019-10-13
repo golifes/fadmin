@@ -39,7 +39,6 @@ func DummyMiddleware() gin.HandlerFunc {
 			}
 		}
 		c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(body))
-
 		c.Next()
 	}
 
