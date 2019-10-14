@@ -13,30 +13,29 @@ type Dao struct {
 }
 
 func (d Dao) Query(ctx context.Context,
-	table string, col []string, fields []string, values []interface{}, pn, ps int, model interface{},
-) (interface{}, int) {
+	table string, col []string, fields []string, values []interface{}, pn, ps int, model interface{}) (interface{}, error) {
 	sql := d.Select(col...).From(table).OrderBy(" id desc").Limit(ps, pn).String()
 	switch model.(type) {
 	case admin.User:
 		return d.query(sql, fields, values, admin.User{})
 
 	}
-	return nil, 0
+	return nil, nil
 }
 
-func (d Dao) Count(ctx context.Context, db string, fields []string, values []interface{}) (int, error) {
+func (d Dao) Count(ctx context.Context, db string, fields []string, values []interface{}, model interface{}) (int, error) {
 	panic("implement me")
 }
 
-func (d Dao) Insert(ctx context.Context, db string, fields []string, values []interface{}) int {
+func (d Dao) Insert(ctx context.Context, db string, fields []string, values []interface{}, model interface{}) (int, error) {
 	panic("implement me")
 }
 
-func (d Dao) Update(ctx context.Context, db string, query []string, fields []string, values []interface{}) int {
+func (d Dao) Update(ctx context.Context, db string, query []string, fields []string, values []interface{}, model interface{}) (int, error) {
 	panic("implement me")
 }
 
-func (d Dao) Delete(ctx context.Context, db string, fields []string, values []interface{}) int {
+func (d Dao) Delete(ctx context.Context, db string, fields []string, values []interface{}, model interface{}) (int, error) {
 	panic("implement me")
 }
 

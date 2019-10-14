@@ -2,9 +2,9 @@ package admin
 
 import "fmt"
 
-func (d Dao) query(sql string, fields []string, values []interface{}, model interface{}) (interface{}, int) {
+func (d Dao) query(sql string, fields []string, values []interface{}, model interface{}) (interface{}, error) {
 	if rows, err := d.DB().Query(sql, values); err != nil {
-		return nil, 0
+		return nil, nil
 	} else {
 		cols := make([]interface{}, len(fields))
 		for i, _ := range fields {
@@ -24,7 +24,7 @@ func (d Dao) query(sql string, fields []string, values []interface{}, model inte
 			}
 			fmt.Println(data)
 		}
-		return data, 0
+		return data, nil
 	}
 }
 

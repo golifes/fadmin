@@ -2,23 +2,23 @@ package e
 
 const (
 	//通用编码
-	Success          = 200
-	Errors           = 500
-	Forbid           = 403
-	Unauthorized     = 401
-	TokenCreateError = 2000
-	JobError         = 3000
+	Success      = 200
+	Errors       = 500
+	Forbid       = 403 //被禁用
+	Unauthorized = 401 //未授权
 
-	NoLogin = 0001
+	NoLogin    = 10000 //未登录
+	ParamLose  = 10010
+	ParamError = 10020
+	//user
+	UserNotExist     = 100000 //用户不存在
+	UserExist        = 100001 //用户已存在
+	RegisterError    = 100002 //注册异常
+	UpdatePwdError   = 100003 //修改密码异常
+	UpdatePhoneError = 100004 //修改手机号码异常
+	UpdateUserError  = 100005 //修改用户信息异常
+	DeleteUserError  = 100010 //删除用户异常
+	EmptyError       = 100020 //查询结果集异常
 
-	//业务编码
-	AddError      = 1000 //添加失败
-	UpdateError   = 1001 //更新失败
-	DeleteError   = 1002 //删除失败
-	FindError     = 1003 //查询失败
-	EmptyError    = 1004 //查询为空
-	ExistError    = 1005 //已经存在
-	NotExistError = 1006 //用户不存在
-	ParamError    = 1007 //参数错误
-	ParamLose     = 1008 //参数丢失
+	DomainNotExist = 100030 //
 )
