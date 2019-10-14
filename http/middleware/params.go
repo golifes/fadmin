@@ -17,7 +17,7 @@ func DummyMiddleware() gin.HandlerFunc {
 
 		body, _ = ioutil.ReadAll(c.Request.Body)
 		tmp = body
-		if tmp != nil {
+		if tmp != nil && len(tmp) != 0 {
 			flag := false
 			m := make(map[string]interface{})
 			err := json.Unmarshal([]byte(string(tmp)), &m)
