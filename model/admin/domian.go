@@ -11,4 +11,5 @@ type Domain struct {
 	Status int       `json:"status"  ` //状态 ,停用启用
 	Ctime  time.Time `json:"ctime"  `  //创建时间
 	Mtime  time.Time `json:"mtime"  `  //更新时间
+	Did    string    `json:"did"`      //对外暴露的id
 }

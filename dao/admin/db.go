@@ -24,19 +24,19 @@ func (d Dao) Query(ctx context.Context,
 	return nil, 0
 }
 
-func (d Dao) Count(ctx context.Context, db []string, fields []string, values []interface{}) (int, int) {
+func (d Dao) Count(ctx context.Context, db string, fields []string, values []interface{}) (int, error) {
 	panic("implement me")
 }
 
-func (d Dao) Insert(ctx context.Context, db string, fields []string, values []interface{}) {
+func (d Dao) Insert(ctx context.Context, db string, fields []string, values []interface{}) int {
 	panic("implement me")
 }
 
-func (d Dao) Update(ctx context.Context, db string, query []string, fields []string, values []interface{}) {
+func (d Dao) Update(ctx context.Context, db string, query []string, fields []string, values []interface{}) int {
 	panic("implement me")
 }
 
-func (d Dao) Delete(ctx context.Context, db string, fields []string, values []interface{}) {
+func (d Dao) Delete(ctx context.Context, db string, fields []string, values []interface{}) int {
 	panic("implement me")
 }
 
