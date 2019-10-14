@@ -35,7 +35,7 @@ func (l Logic) Count(ctx context.Context, db string, fields []string, values []i
 }
 
 func (l Logic) Insert(ctx context.Context, table string, fields []string, values []interface{}, model interface{}) (int, error) {
-	return l.Db.Insert(ctx, table, fields, values, model)
+	return l.Db.InsertTable(ctx, table, fields, values, model)
 }
 
 func (l Logic) Update(ctx context.Context, table string, query []string, fields []string, values []interface{}, model interface{}) (int, error) {

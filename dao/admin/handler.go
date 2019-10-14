@@ -14,7 +14,7 @@ type Counter interface {
 	Count(ctx context.Context, db string, fields []string, values []interface{}, model interface{}) (int, error) //返回数据条数和message
 }
 type Handler interface {
-	Insert(ctx context.Context, table string, fields []string, values []interface{}, model interface{}) (int, error)                 //自动添加创建时间  op表示操作，比如 select
+	InsertTable(ctx context.Context, table string, fields []string, values []interface{}, model interface{}) (int, error)            //自动添加创建时间  op表示操作，比如 select
 	Update(ctx context.Context, table string, query []string, fields []string, values []interface{}, model interface{}) (int, error) //自动更新更新时间
 	Delete(ctx context.Context, table string, fields []string, values []interface{}, model interface{}) (int, error)                 //删除操作
 }

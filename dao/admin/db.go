@@ -5,6 +5,7 @@ import (
 	"fadmin/model/admin"
 	"fadmin/pkg/config"
 	"github.com/golifes/sqlo"
+	"time"
 )
 
 type Dao struct {
@@ -27,11 +28,16 @@ func (d Dao) Count(ctx context.Context, db string, fields []string, values []int
 	panic("implement me")
 }
 
-func (d Dao) Insert(ctx context.Context, db string, fields []string, values []interface{}, model interface{}) (int, error) {
+func (d Dao) InsertTable(ctx context.Context, db string, fields []string, values []interface{}, model interface{}) (int, error) {
 
 	switch model.(type) {
 	case admin.ParamsLogin:
-		//d.txInsert("")
+		sqlList := map[string][]interface{}{}
+		userSql := d.Insert("user").Cols("user", "pwd", "ctime", "mtime").String()
+		userValue := values[:2]
+		userValue = append(values, time.Now(), time.Now())
+		sqlList[userSql] = userValue
+		d.txInsert(sqlList)
 		return 0, nil
 	}
 
