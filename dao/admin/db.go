@@ -28,7 +28,14 @@ func (d Dao) Count(ctx context.Context, db string, fields []string, values []int
 }
 
 func (d Dao) Insert(ctx context.Context, db string, fields []string, values []interface{}, model interface{}) (int, error) {
-	panic("implement me")
+
+	switch model.(type) {
+	case admin.ParamsLogin:
+		//d.txInsert("")
+		return 0, nil
+	}
+
+	return 0, nil
 }
 
 func (d Dao) Update(ctx context.Context, db string, query []string, fields []string, values []interface{}, model interface{}) (int, error) {

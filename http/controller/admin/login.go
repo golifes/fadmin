@@ -91,4 +91,15 @@ func (h HttpAdminHandler) Register(ctx app.GContext) {
 	if code != e.Success {
 		return
 	}
+
+	//写数据到数据库
+	fields := []string{"name", "pwd"}
+	values := []interface{}{p.Name, utils.EncodeMd5(p.Pwd), p.Did, p.Aid}
+	//insert p 下面开始事物然后insert
+	affect, err := h.logic.Insert(g.NewContext(ctx), "", fields, values, p)
+	if utils.CheckError(err, affect) {
+		g.Json(http.StatusOK, e.Errors, err)
+		return
+	}
+	g.Json(http.StatusOK, e.Success, "")
 }

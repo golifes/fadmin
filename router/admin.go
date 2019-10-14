@@ -7,13 +7,15 @@ import (
 	"net/http"
 )
 
-func admin(r *gin.RouterGroup) {
-	u := r.Group("/admin")
+func admin(e *Engine) {
+	r := e.Group("/user/admin")
 	{
-		u.GET("/test", func(c *gin.Context) {
+		r.GET("/test", func(c *gin.Context) {
 			all, err := ioutil.ReadAll(c.Request.Body)
 			fmt.Println(string(all), err)
 			c.JSON(http.StatusOK, "hello world")
 		})
+		r.POST("/register", e.Register)
+		r.POST("/login", e.Login)
 	}
 }

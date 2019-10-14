@@ -1,6 +1,10 @@
 package admin
 
-import "fmt"
+import (
+	"fadmin/tools/utils"
+	"fmt"
+	"log"
+)
 
 func (d Dao) query(sql string, fields []string, values []interface{}, model interface{}) (interface{}, error) {
 	if rows, err := d.DB().Query(sql, values); err != nil {
@@ -50,4 +54,20 @@ func (d Dao) insert(sql string, values []interface{}) int {
 	} else {
 		return int(rowsAffected)
 	}
+}
+
+func (d Dao) txInsert(values map[string][]interface{}) {
+	tx, err := d.DB().Begin()
+	if utils.CheckError(err, tx) {
+		for k, v := range values {
+			if _, err := tx.Exec(k, v); err != nil {
+				log.Printf("%s", err)
+				err = tx.Rollback()
+				log.Printf("%s", err)
+				return
+			}
+		}
+		err = tx.Commit()
+	}
+
 }

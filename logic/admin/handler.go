@@ -47,3 +47,7 @@ func (l Logic) Delete(ctx context.Context, table string, fields []string, values
 }
 
 var _ LogicHandler = Logic{}
+
+func NewLogic(path string) LogicHandler {
+	return &Logic{Db: admin.NewDb(path)}
+}
