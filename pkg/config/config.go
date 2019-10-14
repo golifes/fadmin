@@ -26,7 +26,7 @@ type Config struct {
 }
 
 var (
-	engine *sqlo.Engine
+	engine sqlo.Engine
 	Port   string
 	//RedisClient *redis.Client
 	//EsClient    *elastic.Client
@@ -41,7 +41,8 @@ func NewConfig(path string) (config Config) {
 	return
 }
 
-func NewDb() *sqlo.Engine {
+func NewDb() sqlo.Engine {
+	fmt.Println("newDb", engine)
 	return engine
 }
 
@@ -57,7 +58,7 @@ func (c *Config) loadDb() {
 		c.Db.Db)
 	fmt.Println(dns)
 
-	engine, err := sqlo.Connect(dns)
+	engine, err = sqlo.Connect(dns)
 	ping := engine.Ping()
 	if ping != nil || err != nil {
 		panic(ping)

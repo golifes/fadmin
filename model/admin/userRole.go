@@ -11,6 +11,6 @@ type UserRole struct {
 	Rid    string    `json:"rid"  `
 	Uid    string    `json:"uid"  `
 	Status int       `json:"status"  `
-	CTime  time.Time `json:"ctime"  `
-	MTime  time.Time `json:"mtime"  `
+	Ctime  time.Time `json:"ctime"  ` //创建时间
+	Mtime  time.Time `json:"mtime"  ` //更新时间
 }

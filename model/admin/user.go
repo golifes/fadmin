@@ -12,10 +12,11 @@ type User struct {
 	Nick   string    `json:"name"  `  //昵称
 	Pwd    string    `json:"pwd" `    //密码
 	Phone  string    `json:"phone"`   //电话号码
-	CTime  time.Time `json:"ctime"  ` //创建时间
-	MTime  time.Time `json:"mtime"  ` //更新时间
+	Ctime  time.Time `json:"ctime"  ` //创建时间
+	Mtime  time.Time `json:"mtime"  ` //更新时间
 	Openid string    `json:"openid"`  //微信小程序唯一标识
 	Data   string    `json:"data"`    //备用字段
+	Uid    string    `json:"uid"`     //对外暴露id
 }
 
 //需要其他的查询参数继续添加

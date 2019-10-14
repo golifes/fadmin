@@ -32,10 +32,11 @@ func (d Dao) query(sql string, fields []string, values []interface{}, model inte
 	}
 }
 
-func (d Dao) count(sql string) int {
-	row := d.DB().QueryRow(sql)
+func (d Dao) count(sql string, args ...interface{}) int {
+	row := d.DB().QueryRow(sql, args...)
 	var count int64
 	if err := row.Scan(&count); err != nil {
+		log.Printf("%s", err)
 		return 0
 	} else {
 		return int(count)
@@ -56,18 +57,18 @@ func (d Dao) insert(sql string, values []interface{}) int {
 	}
 }
 
-func (d Dao) txInsert(values map[string][]interface{}) {
+func (d Dao) txInsert(values map[string][]interface{}) error {
 	tx, err := d.DB().Begin()
 	if utils.CheckError(err, tx) {
 		for k, v := range values {
-			if _, err := tx.Exec(k, v); err != nil {
+			if _, err := tx.Exec(k, v...); err != nil {
 				log.Printf("%s", err)
 				err = tx.Rollback()
 				log.Printf("%s", err)
-				return
+				return err
 			}
 		}
 		err = tx.Commit()
 	}
-
+	return nil
 }

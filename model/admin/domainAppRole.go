@@ -12,6 +12,6 @@ type DomainAppRole struct {
 	Aid    string    `json:"aid" `    //应用id
 	Rid    string    `json:"rid" `    //角色id
 	Status int       `json:"status" ` //状态 停用启用
-	CTime  time.Time `json:"ctime" `  //创建时间
-	MTime  time.Time `json:"mtime" `  //更新时间
+	Ctime  time.Time `json:"ctime"  ` //创建时间
+	Mtime  time.Time `json:"mtime"  ` //更新时间
 }

@@ -12,6 +12,6 @@ type DomainAppUser struct {
 	Aid    string    `json:"aid" `     //应用id
 	Uid    string    `json:"uid" `     //用户id
 	Status int       `json:"status"  ` //状态
-	CTime  time.Time `json:"ctime"  `  //创建时间
-	MTime  time.Time `json:"mtime"  `  //更新时间
+	Ctime  time.Time `json:"ctime"  `  //创建时间
+	Mtime  time.Time `json:"mtime"  `  //更新时间
 }

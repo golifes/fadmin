@@ -5,6 +5,7 @@ import (
 	"fadmin/pkg/app"
 	"fadmin/pkg/e"
 	"fadmin/tools/utils"
+	"fmt"
 	"net/http"
 )
 
@@ -74,10 +75,13 @@ func (h HttpAdminHandler) Register(ctx app.GContext) {
 	//	g.Json(http.StatusOK, code, "")
 	//	return
 	//}
-	g, err := h.common(ctx, p)
+	tmp := p
+	g, err := h.common(ctx, &p)
 	if err != nil {
 		return
 	}
+	fmt.Println(tmp, p)
+
 	//校验是否存在
 	//values := []interface{}{p.Did, p.Aid}
 	//fields := []string{"did=", "aid="}
@@ -96,8 +100,8 @@ func (h HttpAdminHandler) Register(ctx app.GContext) {
 	fields := []string{"name", "pwd"}
 	values := []interface{}{p.Name, utils.EncodeMd5(p.Pwd), p.Did, p.Aid}
 	//insert p 下面开始事物然后insert
-	affect, err := h.logic.Insert(g.NewContext(ctx), "", fields, values, p)
-	if utils.CheckError(err, affect) {
+	err = h.logic.TxInsert(g.NewContext(ctx), "", fields, values, p)
+	if utils.CheckError(err, "TxInsert") {
 		g.Json(http.StatusOK, e.Errors, err)
 		return
 	}
