@@ -1,6 +1,6 @@
 package admin
 
 type ParamsDomainApp struct {
-	Did string `json:"did"`
-	Aid string `json:"aid"`
+	Did int64 `json:"did"`
+	Aid int64 `json:"aid"`
 }

@@ -9,10 +9,7 @@ import (
 )
 
 func InitRouter(path string) *Engine {
-	r := &Engine{gin.New(), adminc.NewAdminHttpAdminHandler(path), func() string {
-
-		return config.NewHttpPort()
-	}}
+	r := &Engine{gin.New(), adminc.NewAdminHttpAdminHandler(path), func() string { return config.NewHttpPort() }}
 	r.Use(middleware.DummyMiddleware())
 	//u := r.Group("/user")
 	admin(r)

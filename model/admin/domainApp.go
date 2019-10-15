@@ -7,11 +7,10 @@ Id 用Did和Aid计算出来一个值，然后代表当前唯一id,这样方便�
 */
 
 type DomainApp struct {
-	Id     int64     `json:"id" `      //主键id
-	Name   string    `json:"name" `    //名称id
-	Aid    string    `json:"aid"`      //对外暴露的id
-	Did    string    `json:"did" `     //域id(用的对外暴露的id)
-	Status int       `json:"status"  ` //状态 停用启用
-	Ctime  time.Time `json:"ctime" `   //创建时间
-	Mtime  time.Time `json:"mtime" `   //更新时间
+	Id     int64     `json:"id" `                  //主键id
+	Name   string    `json:"name"`                 //名称id
+	Did    int64     `json:"did" `                 //域id(用的对外暴露的id)
+	Status int       `json:"status"  `             //状态 停用启用
+	Ctime  time.Time `json:"ctime" xorm:"created"` //创建时间
+	Mtime  time.Time `json:"mtime" xorm:"updated"` //更新时间
 }

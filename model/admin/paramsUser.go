@@ -9,6 +9,6 @@ package admin
 type ParamsLogin struct {
 	Name string `json:"name"   binding:"required"`
 	Pwd  string `json:"pwd"   binding:"required"`
-	Did  string `json:"did" binding:"required"`
-	Aid  string `json:"aid" binding:"required"`
+	Did  int64  `json:"did" binding:"required"`
+	Aid  int64  `json:"aid" binding:"required"`
 }

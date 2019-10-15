@@ -27,3 +27,11 @@ func (g *G) Json(httpCode, code int, data interface{}) {
 	g.JSON(httpCode, m)
 	return
 }
+
+/**
+if err != nil {
+	g.Json(http.StatusOK, e.Errors, "")
+}else {
+	g.Json(http.StatusOK,e.Success,"")
+}
+*/

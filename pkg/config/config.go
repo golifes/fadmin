@@ -3,9 +3,9 @@ package config
 import (
 	"fadmin/tools/snowflake"
 	"fmt"
+	"github.com/xormplus/xorm"
 	//"github.com/go-redis/redis"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/golifes/sqlo"
 	//"github.com/olivere/elastic/v7"
 	//"github.com/xormplus/xorm"
 )
@@ -30,8 +30,9 @@ type Config struct {
 }
 
 var (
-	engine sqlo.Engine
+	engine *xorm.Engine
 	Port   string
+	nodeId int64
 	//RedisClient *redis.Client
 	//EsClient    *elastic.Client
 )
@@ -40,24 +41,30 @@ func NewConfig(path string) (config Config) {
 	Load(path, &config)
 	config.loadDb()
 	config.httpServer()
+	config.newNodeId()
 	//config.LoadRedis()
 	//config.LoadElastic()
 	return
 }
 
-func NewDb() sqlo.Engine {
+func NewDb() *xorm.Engine {
 	fmt.Println("newDb", engine)
 	return engine
 }
 
-func (c *Config) NewSnowId() int64 {
+func (c *Config) newNodeId() (*snowflake.Node, error) {
 	node, err := snowflake.NewNode(c.Node.Id)
+	return node, err
+}
+
+func NewNodeId() int64 {
+	config := Config{}
+	node, err := config.newNodeId()
 	if err != nil {
 		return 0
 	}
 	return node.Id()
 }
-
 func NewHttpPort() string {
 	return Port
 }
@@ -70,13 +77,14 @@ func (c *Config) loadDb() {
 		c.Db.Db)
 	fmt.Println(dns)
 
-	engine, err = sqlo.Connect(dns)
+	engine, err = xorm.NewEngine("mysql", dns)
 	ping := engine.Ping()
 	if ping != nil || err != nil {
 		panic(ping)
 	}
-	engine.DB().SetMaxIdleConns(c.Db.MaxIdle)
-	engine.DB().SetMaxOpenConns(c.Db.MaxOpen)
+	engine.SetMaxIdleConns(c.Db.MaxIdle)
+	engine.SetMaxOpenConns(c.Db.MaxOpen)
+	engine.ShowSQL(c.Db.Show)
 }
 
 func (c *Config) httpServer() {

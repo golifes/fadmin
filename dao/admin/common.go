@@ -1,74 +1,33 @@
 package admin
 
-import (
-	"fadmin/tools/utils"
-	"fmt"
-	"log"
-)
+import "fadmin/tools/utils"
 
-func (d Dao) query(sql string, fields []string, values []interface{}, model interface{}) (interface{}, error) {
-	if rows, err := d.DB().Query(sql, values); err != nil {
-		return nil, nil
-	} else {
-		cols := make([]interface{}, len(fields))
-		for i, _ := range fields {
-			cols[i] = &fields[i]
-		}
-		data := make([]map[string]interface{}, 0)
-		if rows != nil {
-			column, _ := rows.Columns()
-			for rows.Next() {
-				err = rows.Scan(cols...)
-				row := make(map[string]interface{}) //每行数据
-				for k, v := range fields {
-					key := column[k]
-					row[key] = v
-				}
-				data = append(data, row)
-			}
-			fmt.Println(data)
-		}
-		return data, nil
-	}
+func (d Dao) insertOne(beans ...interface{}) error {
+	_, err := d.Engine.Insert(beans)
+	return err
 }
 
-func (d Dao) count(sql string, args ...interface{}) int {
-	row := d.DB().QueryRow(sql, args...)
-	var count int64
-	if err := row.Scan(&count); err != nil {
-		log.Printf("%s", err)
-		return 0
-	} else {
-		return int(count)
-	}
-}
-func (d Dao) insert(sql string, values []interface{}) int {
-	stmt, err := d.DB().Prepare(sql)
-	defer stmt.Close()
+func (d Dao) insertMany(beans ...interface{}) error {
+	session := d.Engine.NewSession()
+	defer session.Close()
+	tx, err := session.BeginTrans()
 	if err != nil {
-		return 0
+		return err
 	}
-	if result, err := stmt.Exec(values...); err != nil {
-		return 0
-	} else if rowsAffected, err := result.RowsAffected(); err != nil {
-		return 0
-	} else {
-		return int(rowsAffected)
-	}
-}
+	for _, bean := range beans {
 
-func (d Dao) txInsert(values map[string][]interface{}) error {
-	tx, err := d.DB().Begin()
-	if utils.CheckError(err, tx) {
-		for k, v := range values {
-			if _, err := tx.Exec(k, v...); err != nil {
-				log.Printf("%s", err)
-				err = tx.Rollback()
-				log.Printf("%s", err)
-				return err
-			}
+		_, err := tx.Session().Insert(&bean)
+		if err != nil {
+			tx.RollbackTrans()
 		}
-		err = tx.Commit()
 	}
 	return nil
+}
+
+func (d Dao) exist(bean ...interface{}) error {
+	exist, err := d.Engine.Exist(&bean)
+	if exist && utils.CheckError(err, exist) {
+		return nil
+	}
+	return err
 }

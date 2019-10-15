@@ -7,16 +7,15 @@ import "time"
 */
 type User struct {
 	//Id  int64
-	Id     int64     `json:"id"  `    //主键id
-	Name   string    `json:"name"  `  //用户名
-	Nick   string    `json:"name"  `  //昵称
-	Pwd    string    `json:"pwd" `    //密码
-	Phone  string    `json:"phone"`   //电话号码
-	Ctime  time.Time `json:"ctime"  ` //创建时间
-	Mtime  time.Time `json:"mtime"  ` //更新时间
-	Openid string    `json:"openid"`  //微信小程序唯一标识
-	Data   string    `json:"data"`    //备用字段
-	Uid    string    `json:"uid"`     //对外暴露id
+	Id     int64     `json:"id"  `                 //主键id
+	Name   string    `json:"name"  `               //用户名
+	Nick   string    `json:"name"  `               //昵称
+	Pwd    string    `json:"pwd" `                 //密码
+	Phone  string    `json:"phone"`                //电话号码
+	Ctime  time.Time `json:"ctime" xorm:"created"` //创建时间
+	Mtime  time.Time `json:"mtime" xorm:"updated"` //更新时间
+	Openid string    `json:"openid"`               //微信小程序唯一标识
+	Data   string    `json:"data"`                 //备用字段
 }
 
 //需要其他的查询参数继续添加

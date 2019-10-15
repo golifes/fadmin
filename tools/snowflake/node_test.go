@@ -8,6 +8,11 @@ import (
 
 func TestNewWorker(t *testing.T) {
 	fmt.Println(time.Now().UnixNano() / 1e6)
+	node, _ := NewNode(1)
+	id := node.Id()
+	fmt.Println(id)
+	tmp := id
+	fmt.Println(tmp)
 	//	// 测试脚本
 	//
 	//	// 生成节点实例

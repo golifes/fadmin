@@ -20,12 +20,12 @@ type Menu struct {
 	Sort       int       `json:"sort"`        //子菜单排序
 	Hidden     int       `json:"hidden"`      //是否展示
 	Status     int       `json:"status" `
-	CTime      time.Time `json:"ctime" `
-	MTime      time.Time `json:"mtime"  `
+	Ctime      time.Time `json:"ctime" xorm:"created"` //创建时间
+	Mtime      time.Time `json:"mtime" xorm:"updated"` //更新时间
 	Action     Actions   `json:"action"`
 	Source     Sources   `json:"source"`
-	Did        string    `json:"did"  ` //冗余字段，为了查询方便
-	Aid        string    `json:"adi"  `
+	Did        int64     `json:"did"  ` //冗余字段，为了查询方便
+	Aid        int64     `json:"adi"  `
 }
 
 type Actions []*Action
