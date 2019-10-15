@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fadmin/tools/snowflake"
 	"fmt"
 	//"github.com/go-redis/redis"
 	_ "github.com/go-sql-driver/mysql"
@@ -23,6 +24,9 @@ type Config struct {
 	App struct {
 		Port string
 	}
+	Node struct {
+		Id int64
+	}
 }
 
 var (
@@ -44,6 +48,14 @@ func NewConfig(path string) (config Config) {
 func NewDb() sqlo.Engine {
 	fmt.Println("newDb", engine)
 	return engine
+}
+
+func (c *Config) NewSnowId() int64 {
+	node, err := snowflake.NewNode(c.Node.Id)
+	if err != nil {
+		return 0
+	}
+	return node.Id()
 }
 
 func NewHttpPort() string {
