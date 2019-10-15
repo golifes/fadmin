@@ -20,5 +20,7 @@ const (
 	DeleteUserError  = 100010 //删除用户异常
 	EmptyError       = 100020 //查询结果集异常
 
-	DomainNotExist = 100030 //
+	DomainNotExist    = 100030 //
+	DomainExist       = 100031
+	DomainDeleteError = 100032
 )

@@ -30,11 +30,12 @@ func (h HttpAdminHandler) AddDomain(ctx app.GContext) {
 		return
 	}
 
-	err = h.logic.Exist(g.NewContext(ctx), admin.Domain{Name: p.Name})
-	if err != nil {
-		g.Json(http.StatusOK, e.Errors, "")
+	exist := h.logic.Exist(g.NewContext(ctx), &admin.Domain{Name: p.Name})
+	if exist {
+		g.Json(http.StatusOK, e.DomainExist, "")
 		return
 	}
+
 	p.Status = 1
 	p.Id = config.NewNodeId()
 	err = h.logic.TxInsert(g.NewContext(ctx), p)
@@ -43,4 +44,34 @@ func (h HttpAdminHandler) AddDomain(ctx app.GContext) {
 	} else {
 		g.Json(http.StatusOK, e.Success, "")
 	}
+}
+
+func (h HttpAdminHandler) DeleteDomain(ctx app.GContext) {
+	var p admin.Domain
+	//g := app.G{Context: ctx}
+	//
+	//code := e.Success
+	//bindJSON := ctx.ShouldBindJSON(&p)
+	//fmt.Println(bindJSON)
+	//if !utils.CheckError(bindJSON, "bind params error") {
+	//	code = e.ParamError
+	//	g.Json(http.StatusOK, code, "")
+	//	return
+	//}
+	g, err := h.common(ctx, p)
+	if err != nil {
+		return
+	}
+	//if p.Id == 0 {
+	//	g.Json(http.StatusOK, e.ParamError, "")
+	//	return
+	//}
+	//affect, err := h.logic.Delete(g.NewContext(ctx), p.Id, p)
+	//if err != nil {
+	//	g.Json(http.StatusOK, e.DomainDeleteError, p.Id)
+	//	return
+	//}
+	g.Json(http.StatusOK, e.Success, "affect")
+	return
+
 }

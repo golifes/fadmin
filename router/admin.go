@@ -18,5 +18,6 @@ func admin(e *Engine) {
 		r.POST("/register", e.Register)
 		r.POST("/login", e.Login)
 		r.POST("/domain", e.AddDomain)
+		r.POST("/deleteDomain", e.DeleteDomain)
 	}
 }

@@ -20,14 +20,22 @@ func (d Dao) TxInsert(ctx context.Context, model interface{}) error {
 	return nil
 }
 
-func (d Dao) Exist(ctx context.Context, model interface{}) error {
+func (d Dao) Exist(ctx context.Context, model interface{}) bool {
 	switch model.(type) {
-	case admin.Domain:
+	case *admin.Domain:
 		return d.exist(model)
 	}
-	return nil
+	return false
 }
 
+func (d Dao) Delete(ctx context.Context, id int64, model interface{}) (int64, error) {
+	switch model.(type) {
+	case admin.Domain:
+		return d.delete(id, model)
+	}
+	return 0, nil
+
+}
 func NewDb(path string) *Dao {
 	return &Dao{config.NewConfig(path), config.NewDb()}
 }

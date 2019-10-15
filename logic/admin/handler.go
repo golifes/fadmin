@@ -14,7 +14,8 @@ type adminHandler interface {
 
 type Handler interface {
 	TxInsert(ctx context.Context, model interface{}) error
-	Exist(ctx context.Context, model interface{}) error
+	Exist(ctx context.Context, model interface{}) bool
+	Delete(ctx context.Context, id int64, model interface{}) (int64, error)
 	//Query(ctx context.Context,
 	//	table string, cols []string, fields []string, values []interface{}, pn, ps int, model interface{}, orderBy string) (interface{}, error) //表名,字段,条件,分页 ,返回值是结果集和message model是查询结果集的rows映射
 	//Count(ctx context.Context, db string, fields []string, values []interface{}, model interface{}) (int, error)                                //返回
@@ -29,8 +30,11 @@ type Logic struct {
 func (l Logic) TxInsert(ctx context.Context, model interface{}) error {
 	return l.Db.TxInsert(ctx, model)
 }
-func (l Logic) Exist(ctx context.Context, model interface{}) error {
+func (l Logic) Exist(ctx context.Context, model interface{}) bool {
 	return l.Db.Exist(ctx, model)
+}
+func (l Logic) Delete(ctx context.Context, id int64, model interface{}) (int64, error) {
+	return l.Db.Delete(ctx, id, model)
 }
 
 //func (l Logic) Query(ctx context.Context,

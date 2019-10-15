@@ -48,7 +48,7 @@ func NewConfig(path string) (config Config) {
 }
 
 func NewDb() *xorm.Engine {
-	fmt.Println("newDb", engine)
+	//fmt.Println("newDb", engine)
 	return engine
 }
 
