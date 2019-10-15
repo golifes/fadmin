@@ -4,7 +4,7 @@
     "Port": 3306,
     "User": "root",
     "Db": "fadmin",
-    "Pwd": "qinliang",
+    "Pwd": "1234",
     "MaxOpen": 256,
     "MaxIdle": 150
   },
@@ -16,6 +16,9 @@
     "Db": 0
   },
   "App": {
-    "Port":":8080"
+    "Port": ":8080"
+  },
+  "Node": {
+    "Id": 1
   }
 }
