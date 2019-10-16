@@ -5,17 +5,20 @@ import (
 	"flag"
 )
 
-// @title 后台管理api文档
+// @title Swagger Example API
 // @version 1.0
-// @description  Golang api of demo
-// @termsOfService http://github.com
+// @description This is a sample server Petstore server.
+// @termsOfService http://swagger.io/terms/
 
 // @contact.name API Support
-// @contact.url http://www.cnblogs.com
-// @contact.email ×××@qq.com
-// @license.name MIT
-//@host 127.0.0.1:8081
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
 
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host petstore.swagger.io
+// @BasePath /v2
 func main() {
 	path := flag.String("-c", "config/config.json", "config.conf")
 	router.InitRouter(*path)
