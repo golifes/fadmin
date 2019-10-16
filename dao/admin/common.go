@@ -38,3 +38,19 @@ func (d Dao) exist(bean ...interface{}) bool {
 func (d Dao) delete(id int64, bean interface{}) (int64, error) {
 	return d.Engine.Id(id).Delete(bean)
 }
+
+//要支持模糊查询
+func (d Dao) find(bean interface{}, ps, pn int, query []string, values []interface{}, cond ...interface{}) (interface{}, int64) {
+	var count int64
+	var err error
+	if len(query) == 0 {
+		count, err = d.Engine.FindAndCount(bean, cond...)
+		if err != nil {
+			return nil, 0
+		}
+	} else {
+		//d.Engine.Where()
+	}
+
+	return bean, count
+}

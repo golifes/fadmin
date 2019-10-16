@@ -1,6 +1,8 @@
 package admin
 
-type ParamsDomainApp struct {
-	Did int64 `json:"did"`
-	Aid int64 `json:"aid"`
+type ParamsDomainList struct {
+	Id   int64 `json:"id"`
+	Ps   int
+	Pn   int    //分页
+	Name string //模糊查询
 }

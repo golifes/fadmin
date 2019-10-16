@@ -23,19 +23,6 @@ func (h HttpAdminHandler) ExistDomainApp(g app.G, ctx app.GContext, did, aid int
 	return e.Success
 }
 
-// ShowAccount godoc
-// @Summary Show a account
-// @Description get string by ID
-// @ID get-string-by-int
-// @Accept  json
-// @Produce  json
-// @Param id path int true "Account ID"
-// @Success 200 {object} model.Account
-// @Header 200 {string} Token "qwerty"
-// @Failure 400 {object} httputil.HTTPError
-// @Failure 404 {object} httputil.HTTPError
-// @Failure 500 {object} httputil.HTTPError
-// @Router /accounts/{id} [get]
 func (h HttpAdminHandler) AddDomain(ctx app.GContext) {
 	var p admin.Domain
 	g, err := h.common(ctx, &p)
@@ -59,39 +46,41 @@ func (h HttpAdminHandler) AddDomain(ctx app.GContext) {
 	}
 }
 
-// @Summary 新增文章标签
-// @Produce  json
-// @Param name query string true "Name"
-// @Param state query int false "State"
-// @Param created_by query int false "CreatedBy"
-// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
-// @Router /api/v1/tags [post]
+/**
+参数{"id":1,"name":2}
+*/
 func (h HttpAdminHandler) DeleteDomain(ctx app.GContext) {
 	var p admin.Domain
-	//g := app.G{Context: ctx}
-	//
-	//code := e.Success
-	//bindJSON := ctx.ShouldBindJSON(&p)
-	//fmt.Println(bindJSON)
-	//if !utils.CheckError(bindJSON, "bind params error") {
-	//	code = e.ParamError
-	//	g.Json(http.StatusOK, code, "")
-	//	return
-	//}
+
 	g, err := h.common(ctx, &p)
 	if err != nil {
 		return
 	}
-	//if p.Id == 0 {
-	//	g.Json(http.StatusOK, e.ParamError, "")
-	//	return
-	//}
-	//affect, err := h.logic.Delete(g.NewContext(ctx), p.Id, p)
-	//if err != nil {
-	//	g.Json(http.StatusOK, e.DomainDeleteError, p.Id)
-	//	return
-	//}
-	g.Json(http.StatusOK, e.Success, "affect")
+	if p.Id == 0 {
+		g.Json(http.StatusOK, e.ParamError, "")
+		return
+	}
+	affect, err := h.logic.Delete(g.NewContext(ctx), p.Id, p)
+	if err != nil {
+		g.Json(http.StatusOK, e.DomainDeleteError, p.Id)
+		return
+	}
+	g.Json(http.StatusOK, e.Success, affect)
 	return
+
+}
+
+func (h HttpAdminHandler) FindDomain(ctx app.GContext) {
+	var p admin.ParamsDomainList
+	g, err := h.common(ctx, &p)
+	if err != nil {
+		return
+	}
+
+	list, count := h.logic.FineOne(g.NewContext(ctx), 0, 0, nil, nil, p)
+	m := make(map[string]interface{})
+	m["count"] = count
+	m["data"] = list
+	g.Json(http.StatusOK, e.Success, m)
 
 }

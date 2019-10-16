@@ -9,6 +9,7 @@ func admin(e *Engine) {
 		{
 			domain.POST("/domain", e.AddDomain)
 			domain.POST("/deleteDomain", e.DeleteDomain)
+			domain.GET("/domain", e.FindDomain)
 		}
 
 	}

@@ -12,6 +12,16 @@ type Dao struct {
 	*xorm.Engine
 }
 
+func (d Dao) FineOne(ctx context.Context, ps, pn int, query []string, values []interface{}, bean interface{}) (interface{}, int64) {
+	switch bean.(type) {
+	case admin.ParamsDomainList:
+		var ret []admin.Domain
+		//bean interface{}, cond ...interface{}
+		return d.find(&ret, ps, pn, query, values, bean)
+	}
+	return nil, 0
+}
+
 func (d Dao) TxInsert(ctx context.Context, model interface{}) error {
 	switch model.(type) {
 	case admin.Domain:
