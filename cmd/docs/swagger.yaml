@@ -1,0 +1,11 @@
+host: 192.168.0.5:8080
+info:
+  contact:
+    name: api文档
+  description: api文档
+  license:
+    name: Apache 2.0
+  title: api管理文档
+  version: "1.0"
+paths: {}
+swagger: "2.0"
