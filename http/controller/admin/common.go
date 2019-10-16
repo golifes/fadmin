@@ -12,7 +12,7 @@ func (h HttpAdminHandler) common(ctx app.GContext, obj interface{}) (app.G, erro
 	g := app.G{Context: ctx}
 
 	code := e.Success
-	bindJSON := ctx.ShouldBindJSON(&obj)
+	bindJSON := ctx.ShouldBindJSON(obj)
 	if !utils.CheckError(bindJSON, "bind params error") {
 		code = e.ParamError
 		g.Json(http.StatusOK, code, "")

@@ -46,6 +46,13 @@ func (h HttpAdminHandler) AddDomain(ctx app.GContext) {
 	}
 }
 
+// @Summary 新增文章标签
+// @Produce  json
+// @Param name query string true "Name"
+// @Param state query int false "State"
+// @Param created_by query int false "CreatedBy"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/tags [post]
 func (h HttpAdminHandler) DeleteDomain(ctx app.GContext) {
 	var p admin.Domain
 	//g := app.G{Context: ctx}
@@ -58,7 +65,7 @@ func (h HttpAdminHandler) DeleteDomain(ctx app.GContext) {
 	//	g.Json(http.StatusOK, code, "")
 	//	return
 	//}
-	g, err := h.common(ctx, p)
+	g, err := h.common(ctx, &p)
 	if err != nil {
 		return
 	}
