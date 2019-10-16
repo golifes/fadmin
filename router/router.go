@@ -16,8 +16,6 @@ func InitRouter(path string) *Engine {
 	r.Use(middleware.DummyMiddleware())
 	admin(r)
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
-	//r.GET("/doc/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Engine.Run(r.Port())
 	return r
 }
