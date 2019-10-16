@@ -1,23 +1,15 @@
 package router
 
-import (
-	"fmt"
-	"github.com/gin-gonic/gin"
-	"io/ioutil"
-	"net/http"
-)
-
 func admin(e *Engine) {
-	r := e.Group("/user/admin")
+	r := e.Group("/admin")
 	{
-		r.GET("/test", func(c *gin.Context) {
-			all, err := ioutil.ReadAll(c.Request.Body)
-			fmt.Println(string(all), err)
-			c.JSON(http.StatusOK, "hello world")
-		})
-		r.POST("/register", e.Register)
-		r.POST("/login", e.Login)
-		r.POST("/domain", e.AddDomain)
-		r.POST("/deleteDomain", e.DeleteDomain)
+		//r.POST("/register", e.Register)
+		//r.POST("/login", e.Login)
+		domain := r.Group("domain")
+		{
+			domain.POST("/domain", e.AddDomain)
+			domain.POST("/deleteDomain", e.DeleteDomain)
+		}
+
 	}
 }
