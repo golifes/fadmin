@@ -18,7 +18,7 @@ func CheckError(err error, v interface{}) bool {
 func Pagination(pageSize, pageNum, defaultPageSize int) (ps, pn int) {
 
 	if pageNum <= 1 {
-		pn = 1
+		pn = 0
 	} else {
 		pn = pageNum
 	}

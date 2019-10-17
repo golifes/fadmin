@@ -9,9 +9,6 @@ type LogicHandler interface {
 	Handler
 }
 
-type adminHandler interface {
-}
-
 type Handler interface {
 	TxInsert(ctx context.Context, model interface{}) error
 	Exist(ctx context.Context, model interface{}) bool

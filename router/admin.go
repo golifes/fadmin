@@ -1,6 +1,6 @@
 package router
 
-func admin(e *Engine) {
+func (e *Engine) admin() {
 	r := e.Group("/admin")
 	{
 		//r.POST("/register", e.Register)

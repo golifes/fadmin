@@ -1,35 +1,44 @@
 package main
 
 import (
-	"fadmin/model/admin"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/xormplus/xorm"
+	"strings"
 )
 
 func main() {
 
-	dns := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
-		"root",
-		"abc123456",
-		"58.87.64.219",
-		"fadmin")
-	fmt.Println(dns)
-	EngDb, err := xorm.NewEngine("mysql", dns)
-
-	ping := EngDb.Ping()
-	if ping != nil || err != nil {
-		panic(ping)
-	}
-
-	//EngDb.Sync2(new(admin.DomainApp))
-	//EngDb.Sync2(new(admin.DomainAppRole))
-	//EngDb.Sync2(new(admin.DomainAppUser))
-	EngDb.Sync2(new(admin.Domain))
+	//dns := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+	//	"root",
+	//	"abc123456",
+	//	"58.87.64.219",
+	//	"fadmin")
+	//fmt.Println(dns)
+	//EngDb, err := xorm.NewEngine("mysql", dns)
+	//
+	//ping := EngDb.Ping()
+	//if ping != nil || err != nil {
+	//	panic(ping)
+	//}
+	//
+	////EngDb.Sync2(new(admin.DomainApp))
+	////EngDb.Sync2(new(admin.DomainAppRole))
+	////EngDb.Sync2(new(admin.DomainAppUser))
+	//EngDb.Sync2(new(admin.Domain))
+	//EngDb.Sync2(new(wx.WeiXin))
 	//EngDb.Sync2(new(admin.Group))
 	//EngDb.Sync2(new(admin.Role))
 	//EngDb.Sync2(new(admin.User))
 	//EngDb.Sync2(new(admin.UserRole))
 	//EngDb.Sync2(new(admin.UserGroup))
 
+	query := []string{"a=? ", " b=? "}
+	join := ""
+	if len(query) == 1 {
+		join = strings.Join(query, " ")
+	}
+	if len(query) >= 2 {
+		join = strings.Join(query, "and ")
+	}
+	fmt.Println(join)
 }

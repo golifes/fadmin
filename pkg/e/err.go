@@ -11,6 +11,8 @@ var msgDict = map[int]string{
 	NoLogin:           "请登录后查看更多页",
 	DomainExist:       "域已经存在",
 	DomainDeleteError: "域删除失败",
+	WxExist:           "微信公众号已存在",
+	UpdateWxError:     "更新微信公众号信息失败",
 }
 
 func GetMsg(code int) string {

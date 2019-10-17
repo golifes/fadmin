@@ -3,43 +3,46 @@ package middleware
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
+	"fadmin/pkg/app"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
 func DummyMiddleware() gin.HandlerFunc {
 
-	return func(c *gin.Context) {
+	return func(ctx app.GContext) {
 		var body []byte
 		var tmp []byte
 
-		body, _ = ioutil.ReadAll(c.Request.Body)
+		body, _ = ioutil.ReadAll(ctx.Request.Body)
 		tmp = body
 		if tmp != nil && len(tmp) != 0 {
-			flag := false
+			//flag := false
 			m := make(map[string]interface{})
 			err := json.Unmarshal([]byte(string(tmp)), &m)
 			if err != nil {
-				c.JSON(http.StatusOK, "参数异常")
-				c.Abort()
+				ctx.JSON(http.StatusOK, "参数异常")
+				ctx.Abort()
 			} else {
 				for _, v := range m {
-					fmt.Println(v)
 					//这里做字符串参数校验
-					if v == "" {
-						flag = true
-					}
+					log.Printf("参数值是%s", v)
+					//if v == "" {
+					//	flag = true
+					//}
 				}
 			}
-
-			if flag {
-				c.Abort()
-			}
+			//
+			//if flag {
+			//	ctx.Abort()
+			//	ctx.JSON(http.StatusOK, "参数异常")
+			//	return
+			//}
 		}
-		c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(body))
-		c.Next()
+		ctx.Request.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+		ctx.Next()
 	}
 
 }
