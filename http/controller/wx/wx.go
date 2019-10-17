@@ -26,6 +26,7 @@ func (h HttpWxHandler) AddWx(ctx app.GContext) {
 		return
 	}
 	p.Id = config.NewNodeId()
+	p.Forbid = 1
 	err = h.logic.InsertOne(g.NewContext(ctx), p)
 
 	if err != nil {
@@ -57,28 +58,20 @@ func (h HttpWxHandler) FindWxBiz(ctx app.GContext) {
 		return
 	}
 	ps, pn := utils.Pagination(p.Ps, p.Pn, 10)
-	var query []string
-	var values []interface{}
+	query := []string{" forbid = ? "}
+	values := []interface{}{1}
 	if p.Name != "" {
-		query = append(query, " `name` like ? ")
+		query = append(query, " and `name` like ? ")
 		values = append(values, fmt.Sprintf("%s%s%s", "%", p.Name, "%"))
 	}
 
 	if p.Biz != "" {
-		if len(values) == 0 {
-			query = append(query, "  biz = ? ")
-		} else {
-			query = append(query, " and biz = ? ")
-		}
+		query = append(query, " and biz = ? ")
 		values = append(values, p.Biz)
 	}
 
 	if p.Id != 0 {
-		if len(values) == 0 {
-			query = append(query, "  id = ? ")
-		} else {
-			query = append(query, " and id = ? ")
-		}
+		query = append(query, " and id = ? ")
 		values = append(values, p.Id)
 	}
 	//type WeiXin struct {
@@ -93,5 +86,61 @@ func (h HttpWxHandler) FindWxBiz(ctx app.GContext) {
 	m["count"] = count
 	m["list"] = list
 	g.Json(http.StatusOK, e.Success, m)
+}
 
+func (h HttpWxHandler) ForBidWx(ctx app.GContext) {
+	var p wx.ForBidWx
+	g, err := h.common(ctx, &p)
+	if err != nil {
+		return
+	}
+	affect, err := h.logic.UpdateStruct(g.NewContext(ctx), wx.WeiXin{Forbid: 1}, []string{"forbid", "mtime"}, []string{"id = ?"}, []interface{}{p.Id})
+	if !utils.CheckError(err, affect) {
+		g.Json(http.StatusOK, e.UpdateWxError, p.Id)
+	} else {
+		g.Json(http.StatusOK, e.Success, affect)
+	}
+}
+
+func (h HttpWxHandler) WxList(ctx app.GContext) {
+	var p wx.WxList
+	g, err := h.common(ctx, &p)
+	if err != nil {
+		return
+	}
+
+	ps, pn := utils.Pagination(p.Ps, p.Pn, 10)
+	query := []string{" forbid = ? "}
+	values := []interface{}{1}
+
+	if p.Title != "" {
+		query = append(query, " and `title` like ? ")
+		values = append(values, fmt.Sprintf("%s%s%s", "%", p.Title, "%"))
+	}
+
+	if p.Id != 0 {
+		query = append(query, " and id = ? ")
+		values = append(values, p.Id)
+	}
+
+	if p.StartTime.Unix() > 0 {
+		query = append(query, " and public_time >= ? ")
+		values = append(values, p.StartTime)
+	}
+
+	if p.EndTime.Unix() > 0 {
+		query = append(query, " and public_time <= ? ")
+		values = append(values, p.StartTime)
+	}
+	oderBy := "id desc "
+	if p.OrderBy != "" {
+		oderBy = p.OrderBy
+	}
+	weiXin := make([]wx.WeiXinList, 0)
+	//
+	list, count := h.logic.FindOne(g.NewContext(ctx), &weiXin, ps, pn, oderBy, "wei_xin_list", query, values)
+	m := make(map[string]interface{})
+	m["count"] = count
+	m["list"] = list
+	g.Json(http.StatusOK, e.Success, m)
 }

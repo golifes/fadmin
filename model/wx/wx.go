@@ -13,7 +13,7 @@ type WeiXin struct {
 	Desc       string    `json:"desc" binding:"required"`  //公号描述
 	Biz        string    `json:"biz" binding:"required"`   //公号biz
 	Count      string    `json:"count"`                    //公号文章数量
-	Forbid     int       `json:"forbid"`                   //是否被禁用
+	Forbid     int       `json:"forbid" xorm:"default 1"`  //是否被禁用
 	Key        string    `json:"key"`                      //公号Key
 	Ctime      time.Time `json:"ctime" xorm:"created"`     //创建时间
 	Mtime      time.Time `json:"mtime" xorm:"updated"`     //更新时间
