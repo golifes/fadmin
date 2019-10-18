@@ -67,7 +67,29 @@ func (h HttpAdminHandler) DeleteDomain(ctx app.GContext) {
 	}
 	g.Json(http.StatusOK, e.Success, affect)
 	return
+}
 
+func (h HttpAdminHandler) UpdateDomain(ctx app.GContext) {
+	var p admin.Domain
+	g, err := h.common(ctx, &p)
+	if err != nil {
+		return
+	}
+
+	exist := h.logic.Exist(g.NewContext(ctx), &admin.Domain{Name: p.Name})
+	if exist {
+		g.Json(http.StatusOK, e.DomainExist, "")
+		return
+	}
+
+	p.Status = 1
+	p.Id = config.NewNodeId()
+	err = h.logic.TxInsert(g.NewContext(ctx), p)
+	if err != nil {
+		g.Json(http.StatusOK, e.Errors, "")
+	} else {
+		g.Json(http.StatusOK, e.Success, "")
+	}
 }
 
 func (h HttpAdminHandler) FindDomain(ctx app.GContext) {

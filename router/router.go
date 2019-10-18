@@ -7,8 +7,6 @@ import (
 	"fadmin/http/middleware"
 	"fadmin/pkg/config"
 	"github.com/gin-gonic/gin"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 func InitRouter(path ...string) *Engine {
@@ -32,7 +30,7 @@ func InitRouter(path ...string) *Engine {
 	r.admin()
 	r.weiXin()
 
-	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	//r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Engine.Run(r.Port())
 	return r
 }

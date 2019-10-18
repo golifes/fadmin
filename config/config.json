@@ -1,10 +1,10 @@
 {
   "Db": {
-    "Host": "127.0.0.1",
+    "Host": "58.87.64.219",
     "Port": 3306,
     "User": "root",
     "Db": "fadmin",
-    "Pwd": "1234",
+    "Pwd": "abc123456",
     "MaxOpen": 256,
     "MaxIdle": 150
   },
