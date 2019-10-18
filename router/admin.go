@@ -7,9 +7,9 @@ func (e *Engine) admin() {
 		//r.POST("/login", e.Login)
 		domain := r.Group("domain")
 		{
-			domain.POST("/domain", e.AddDomain)
-			domain.POST("/deleteDomain", e.DeleteDomain)
-			domain.GET("/domain", e.FindDomain)
+			domain.POST("/add", e.AddDomain)
+			domain.POST("/delete", e.DeleteDomain)
+			domain.GET("/find", e.FindDomain)
 		}
 
 	}
