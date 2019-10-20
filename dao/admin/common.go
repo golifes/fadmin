@@ -2,6 +2,7 @@ package admin
 
 import (
 	"fadmin/tools/utils"
+	"strings"
 )
 
 func (d Dao) insertOne(beans ...interface{}) error {
@@ -53,4 +54,12 @@ func (d Dao) find(bean interface{}, ps, pn int, query []string, values []interfa
 	}
 
 	return bean, count
+}
+
+func (d Dao) updateMap(table string, m map[string]interface{}, cols, query []string, values []interface{}) (int64, error) {
+	//affected, err := engine.Table(new(User)).Id(id).Update(map[string]interface{}{"age":0})
+	return d.Engine.Table(table).Where(strings.Join(query, ""), values...).Cols(cols...).Update(m)
+}
+func (d Dao) updateStruct(bean interface{}, cols, query []string, values []interface{}) (int64, error) {
+	return d.Engine.Where(strings.Join(query, ""), values...).Cols(cols...).Update(bean)
 }

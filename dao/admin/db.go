@@ -12,6 +12,14 @@ type Dao struct {
 	*xorm.Engine
 }
 
+func (d Dao) UpdateStruct(ctx context.Context, model interface{}, cols, query []string, values []interface{}) (int64, error) {
+	return d.updateStruct(model, cols, query, values)
+}
+
+func (d Dao) UpdateMap(ctx context.Context, table string, m map[string]interface{}, cols, query []string, values []interface{}) (int64, error) {
+	return d.updateMap(table, m, cols, query, values)
+}
+
 func (d Dao) FineOne(ctx context.Context, ps, pn int, query []string, values []interface{}, bean interface{}) (interface{}, int64) {
 	switch bean.(type) {
 	case admin.ParamsDomainList:

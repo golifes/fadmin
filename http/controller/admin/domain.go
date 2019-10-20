@@ -5,6 +5,7 @@ import (
 	"fadmin/pkg/app"
 	"fadmin/pkg/config"
 	"fadmin/pkg/e"
+	"fadmin/tools/utils"
 	"net/http"
 )
 
@@ -76,19 +77,25 @@ func (h HttpAdminHandler) UpdateDomain(ctx app.GContext) {
 		return
 	}
 
+	if p.Id == 0 {
+		g.Json(http.StatusOK, e.ParamError, "")
+		return
+	}
 	exist := h.logic.Exist(g.NewContext(ctx), &admin.Domain{Name: p.Name})
 	if exist {
 		g.Json(http.StatusOK, e.DomainExist, "")
 		return
 	}
+	cols := []string{"name"}
+	if p.Status != 0 {
+		cols = append(cols, "status")
+	}
 
-	p.Status = 1
-	p.Id = config.NewNodeId()
-	err = h.logic.TxInsert(g.NewContext(ctx), p)
-	if err != nil {
-		g.Json(http.StatusOK, e.Errors, "")
+	affect, err := h.logic.UpdateStruct(g.NewContext(ctx), p, cols, []string{"id = ? "}, []interface{}{p.Id})
+	if !utils.CheckError(err, affect) {
+		g.Json(http.StatusOK, e.UpdateWxError, p.Id)
 	} else {
-		g.Json(http.StatusOK, e.Success, "")
+		g.Json(http.StatusOK, e.Success, affect)
 	}
 }
 

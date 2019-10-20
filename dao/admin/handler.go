@@ -14,6 +14,8 @@ type Handler interface {
 	Exist(ctx context.Context, model interface{}) bool
 	Delete(ctx context.Context, id int64, model interface{}) (int64, error)
 	FineOne(ctx context.Context, ps, pn int, query []string, values []interface{}, bean interface{}) (interface{}, int64)
+	UpdateStruct(ctx context.Context, model interface{}, cols, query []string, values []interface{}) (int64, error)
+	UpdateMap(ctx context.Context, table string, m map[string]interface{}, cols, query []string, values []interface{}) (int64, error)
 }
 
 //var _ DbHandler = Dao(nil)

@@ -14,7 +14,8 @@ type Handler interface {
 	Exist(ctx context.Context, model interface{}) bool
 	Delete(ctx context.Context, id int64, model interface{}) (int64, error)
 	FineOne(ctx context.Context, ps, pn int, query []string, values []interface{}, bean interface{}) (interface{}, int64)
-
+	UpdateStruct(ctx context.Context, model interface{}, cols, query []string, values []interface{}) (int64, error)
+	UpdateMap(ctx context.Context, table string, m map[string]interface{}, cols, query []string, values []interface{}) (int64, error)
 	//	table string, cols []string, fields []string, values []interface{}, pn, ps int, model interface{}, orderBy string) (interface{}, error) //表名,字段,条件,分页 ,返回值是结果集和message model是查询结果集的rows映射
 	//Count(ctx context.Context, db string, fields []string, values []interface{}, model interface{}) (int, error)                                //返回
 	//TxInsert(ctx context.Context, table string, fields []string, values []interface{}, model interface{}) error                                 //自动添加创建时间  op表示操作，比如 select
@@ -23,6 +24,14 @@ type Handler interface {
 }
 type Logic struct {
 	Db admin.DbHandler
+}
+
+func (l Logic) UpdateStruct(ctx context.Context, model interface{}, cols, query []string, values []interface{}) (int64, error) {
+	return l.Db.UpdateStruct(ctx, model, cols, query, values)
+}
+
+func (l Logic) UpdateMap(ctx context.Context, table string, m map[string]interface{}, cols, query []string, values []interface{}) (int64, error) {
+	return l.Db.UpdateMap(ctx, table, m, cols, query, values)
 }
 
 func (l Logic) FineOne(ctx context.Context, ps, pn int, query []string, values []interface{}, bean interface{}) (interface{}, int64) {
