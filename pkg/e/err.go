@@ -13,6 +13,8 @@ var msgDict = map[int]string{
 	DomainDeleteError: "域删除失败",
 	WxExist:           "微信公众号已存在",
 	UpdateWxError:     "更新微信公众号信息失败",
+	DomainNotExist:    "域不存在",
+	AppExist:          "应用已存在",
 }
 
 func GetMsg(code int) string {

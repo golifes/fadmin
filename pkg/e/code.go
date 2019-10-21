@@ -23,7 +23,7 @@ const (
 	DomainNotExist    = 100030 //
 	DomainExist       = 100031
 	DomainDeleteError = 100032
-
-	WxExist       = 100100
-	UpdateWxError = 100101
+	AppExist          = 100040
+	WxExist           = 100100
+	UpdateWxError     = 100101
 )

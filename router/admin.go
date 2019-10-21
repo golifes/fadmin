@@ -12,6 +12,11 @@ func (e *Engine) admin() {
 			domain.GET("/find", e.FindDomain)
 			domain.POST("/update", e.UpdateDomain)
 		}
+		app := r.Group("app")
+		{
+			app.POST("/add", e.AddApp)
+			app.POST("/del", e.DeleteApp)
+		}
 
 	}
 }

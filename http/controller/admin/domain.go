@@ -99,14 +99,15 @@ func (h HttpAdminHandler) UpdateDomain(ctx app.GContext) {
 	}
 }
 
+//查询还的优化
 func (h HttpAdminHandler) FindDomain(ctx app.GContext) {
 	var p admin.ParamsDomainList
 	g, err := h.common(ctx, &p)
 	if err != nil {
 		return
 	}
-
-	list, count := h.logic.FineOne(g.NewContext(ctx), 0, 0, nil, nil, p)
+	ps, pn := utils.Pagination(p.Ps, p.Pn, 10)
+	list, count := h.logic.FineOne(g.NewContext(ctx), ps, pn, nil, nil, p)
 	m := make(map[string]interface{})
 	m["count"] = count
 	m["data"] = list
