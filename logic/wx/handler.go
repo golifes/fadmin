@@ -14,15 +14,15 @@ type handler interface {
 	Exist(ctx context.Context, model interface{}) bool
 	UpdateStruct(ctx context.Context, model interface{}, cols, query []string, values []interface{}) (int64, error)
 	UpdateMap(ctx context.Context, table string, m map[string]interface{}, cols, query []string, values []interface{}) (int64, error)
-	FindOne(ctx context.Context, model interface{}, ps, pn int, orderBy, table string, query []string, values []interface{}) (interface{}, int64)
+	FindOne(ctx context.Context, model interface{}, table, orderBy string, query []string, values []interface{}, ps, pn int) (interface{}, int64)
 }
 
 type Logic struct {
 	Db wx.WeiXinHandler
 }
 
-func (l Logic) FindOne(ctx context.Context, model interface{}, ps, pn int, orderBy, table string, query []string, values []interface{}) (interface{}, int64) {
-	return l.Db.FindOne(ctx, model, ps, pn, orderBy, table, query, values)
+func (l Logic) FindOne(ctx context.Context, model interface{}, table, orderBy string, query []string, values []interface{}, ps, pn int) (interface{}, int64) {
+	return l.Db.FindOne(ctx, model, table, orderBy, query, values, ps, pn)
 }
 
 func (l Logic) UpdateStruct(ctx context.Context, model interface{}, cols, query []string, values []interface{}) (int64, error) {

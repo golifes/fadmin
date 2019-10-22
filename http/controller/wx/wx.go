@@ -81,7 +81,7 @@ func (h HttpWxHandler) FindWxBiz(ctx app.GContext) {
 	//}
 	weiXin := make([]wx.RetWx, 0)
 
-	list, count := h.logic.FindOne(g.NewContext(ctx), &weiXin, ps, pn, "id desc ", "wei_xin", query, values)
+	list, count := h.logic.FindOne(g.NewContext(ctx), &weiXin, "wei_xin", "id desc ", query, values, ps, pn)
 	m := make(map[string]interface{})
 	m["count"] = count
 	m["list"] = list
@@ -138,7 +138,7 @@ func (h HttpWxHandler) WxList(ctx app.GContext) {
 	}
 	weiXin := make([]wx.WeiXinList, 0)
 	//
-	list, count := h.logic.FindOne(g.NewContext(ctx), &weiXin, ps, pn, oderBy, "wei_xin_list", query, values)
+	list, count := h.logic.FindOne(g.NewContext(ctx), &weiXin, "wei_xin_list", oderBy, query, values, ps, pn)
 	m := make(map[string]interface{})
 	m["count"] = count
 	m["list"] = list

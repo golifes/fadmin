@@ -43,6 +43,6 @@ func (d Dao) UpdateMap(ctx context.Context, table string, m map[string]interface
 	return d.updateMap(table, m, cols, query, values)
 }
 
-func (d Dao) FindOne(ctx context.Context, model interface{}, ps, pn int, orderBy, table string, query []string, values []interface{}) (interface{}, int64) {
-	return d.findOne(model, ps, pn, orderBy, table, query, values)
+func (d Dao) FindOne(ctx context.Context, model interface{}, table, orderBy string, query []string, values []interface{}, ps, pn int) (interface{}, int64) {
+	return d.findOne(model, table, orderBy, query, values, ps, pn)
 }

@@ -2,7 +2,6 @@ package admin
 
 import (
 	"context"
-	"fadmin/model/admin"
 	"fadmin/pkg/config"
 	"github.com/xormplus/xorm"
 )
@@ -20,14 +19,8 @@ func (d Dao) UpdateMap(ctx context.Context, table string, m map[string]interface
 	return d.updateMap(table, m, cols, query, values)
 }
 
-func (d Dao) FineOne(ctx context.Context, ps, pn int, query []string, values []interface{}, bean interface{}) (interface{}, int64) {
-	switch bean.(type) {
-	case admin.ParamsDomainList:
-		var ret []admin.Domain
-		//bean interface{}, cond ...interface{}
-		return d.find(&ret, ps, pn, query, values, bean)
-	}
-	return nil, 0
+func (d Dao) FindOne(ctx context.Context, model interface{}, table, orderBy string, query []string, values []interface{}, ps, pn int) (interface{}, int64) {
+	return d.findOne(model, table, orderBy, query, values, ps, pn)
 }
 
 func (d Dao) TxInsert(ctx context.Context, model interface{}) error {

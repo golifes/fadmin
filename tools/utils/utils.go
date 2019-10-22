@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"log"
 )
 
@@ -45,4 +46,15 @@ func StringJoin(a ...string) string {
 		buf.WriteString(k)
 	}
 	return buf.String()
+}
+
+func Slice(query []string, values []interface{}, key string, value interface{}) ([]string, []interface{}) {
+	if query != nil {
+		query = append(query, fmt.Sprintf(" and %s", key))
+		values = append(values, value)
+	} else {
+		query = append(query, key)
+		values = append(values, value)
+	}
+	return query, values
 }

@@ -16,6 +16,7 @@ func (e *Engine) admin() {
 		{
 			app.POST("/add", e.AddApp)
 			app.POST("/del", e.DeleteApp)
+			//app.GET("/find", e.FindDomainApp)
 		}
 
 	}

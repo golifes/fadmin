@@ -27,7 +27,7 @@ func (d Dao) updateStruct(bean interface{}, cols, query []string, values []inter
 	return d.Engine.Where(strings.Join(query, ""), values...).Cols(cols...).Update(bean)
 }
 
-func (d Dao) findOne(bean interface{}, ps, pn int, orderBy, table string, query []string, values []interface{}) (interface{}, int64) {
+func (d Dao) findOne(bean interface{}, table, orderBy string, query []string, values []interface{}, ps, pn int) (interface{}, int64) {
 	var count int64
 	var err error
 	if len(query) == 0 {

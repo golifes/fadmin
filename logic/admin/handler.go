@@ -13,7 +13,7 @@ type Handler interface {
 	TxInsert(ctx context.Context, model interface{}) error
 	Exist(ctx context.Context, model interface{}) bool
 	Delete(ctx context.Context, id int64, model interface{}) (int64, error)
-	FineOne(ctx context.Context, ps, pn int, query []string, values []interface{}, bean interface{}) (interface{}, int64)
+	FindOne(ctx context.Context, model interface{}, table, orderBy string, query []string, values []interface{}, ps, pn int) (interface{}, int64)
 	UpdateStruct(ctx context.Context, model interface{}, cols, query []string, values []interface{}) (int64, error)
 	UpdateMap(ctx context.Context, table string, m map[string]interface{}, cols, query []string, values []interface{}) (int64, error)
 	//	table string, cols []string, fields []string, values []interface{}, pn, ps int, model interface{}, orderBy string) (interface{}, error) //表名,字段,条件,分页 ,返回值是结果集和message model是查询结果集的rows映射
@@ -34,8 +34,8 @@ func (l Logic) UpdateMap(ctx context.Context, table string, m map[string]interfa
 	return l.Db.UpdateMap(ctx, table, m, cols, query, values)
 }
 
-func (l Logic) FineOne(ctx context.Context, ps, pn int, query []string, values []interface{}, bean interface{}) (interface{}, int64) {
-	return l.Db.FineOne(ctx, ps, pn, query, values, bean)
+func (l Logic) FindOne(ctx context.Context, model interface{}, table, orderBy string, query []string, values []interface{}, ps, pn int) (interface{}, int64) {
+	return l.Db.FindOne(ctx, model, table, orderBy, query, values, ps, pn)
 }
 
 func (l Logic) TxInsert(ctx context.Context, model interface{}) error {
