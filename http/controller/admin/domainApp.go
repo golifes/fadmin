@@ -5,7 +5,9 @@ import (
 	"fadmin/pkg/app"
 	"fadmin/pkg/config"
 	"fadmin/pkg/e"
+	"fadmin/pkg/table"
 	"fadmin/tools/utils"
+	"fmt"
 	"net/http"
 )
 
@@ -97,5 +99,32 @@ func (h HttpAdminHandler) UpdateApp(ctx app.GContext) {
 }
 
 func (h HttpAdminHandler) FindApp(ctx app.GContext) {
+	var p admin.ParamsAppList
+	g, err := h.common(ctx, &p)
+	if err != nil {
+		return
+	}
+	var query []string
+	var values []interface{}
+	if p.Id != 0 {
+		query, values = utils.Slice(query, values, " id = ? ", p.Id)
+	}
+	if p.Did != 0 {
+		query, values = utils.Slice(query, values, " did = ? ", p.Did)
+	}
+	if p.Name != "" {
+		query, values = utils.Slice(query, values, " `name` like ? ", fmt.Sprintf("%s%s%s", "%", p.Name, "%"))
+	}
 
+	if p.Status != 0 {
+		query, values = utils.Slice(query, values, " status = ? ", p.Status)
+	}
+
+	ps, pn := utils.Pagination(p.Ps, p.Pn, 10)
+	domain := make([]admin.DomainApp, 0)
+	list, count := h.logic.FindOne(g.NewContext(ctx), &domain, table.DomainApp, " ctime desc ", query, values, ps, pn)
+	m := make(map[string]interface{})
+	m["count"] = count
+	m["data"] = list
+	g.Json(http.StatusOK, e.Success, m)
 }

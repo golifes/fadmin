@@ -16,8 +16,12 @@ func (e *Engine) admin() {
 		{
 			app.POST("/add", e.AddApp)
 			app.POST("/del", e.DeleteApp)
-			//app.GET("/find", e.FindDomainApp)
+			app.GET("/find", e.FindApp)
+			app.POST("/update", e.UpdateApp)
 		}
-
+		role := r.Group("role")
+		{
+			role.POST("/add", e.AddRole)
+		}
 	}
 }

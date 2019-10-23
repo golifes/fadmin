@@ -18,13 +18,14 @@ func (d Dao) insertMany(beans ...interface{}) error {
 		return err
 	}
 	for _, bean := range beans {
-
-		_, err := tx.Session().Insert(&bean)
+		_, err := tx.Session().Insert(bean)
 		if err != nil {
-			tx.RollbackTrans()
+			err = tx.RollbackTrans()
+			return err
 		}
 	}
-	return nil
+	err = tx.CommitTrans()
+	return err
 }
 
 func (d Dao) exist(bean ...interface{}) bool {
@@ -66,4 +67,40 @@ func (d Dao) updateMap(table string, m map[string]interface{}, cols, query []str
 }
 func (d Dao) updateStruct(bean interface{}, cols, query []string, values []interface{}) (int64, error) {
 	return d.Engine.Where(strings.Join(query, ""), values...).Cols(cols...).Update(bean)
+}
+
+//2表联查
+func (d Dao) join2Table(bean interface{}, table string, query []string, values []interface{}, join [][3]interface{}) (int64, error) {
+	//mmm := [][3]interface{}{{
+	//	"join", "type", "group.id = user.group_id"},
+	//	{"join", []string{"group", "g"}, "group.id = user.group_id"},}
+
+	session := d.Engine.Table(table)
+	for _, v := range join {
+		session.Join(v[0].(string), v[1], v[2].(string))
+	}
+	count, err := session.Where(strings.Join(query, " "), values...).FindAndCount(bean)
+	//count, err := d.Engine.Table(table).Join(joinOperator, tableName, condition, args).Where(strings.Join(query, " "), values...).FindAndCount(bean)
+	return count, err
+}
+
+//级联删除
+func (d Dao) delete2Table(beans [][2]interface{}) error {
+	/**
+	数据结构如下
+	[][2]{{id,model},{id,model}}
+	*/
+	session := d.Engine.NewSession()
+	defer session.Close()
+	tx, err := session.BeginTrans()
+	if err != nil {
+		return err
+	}
+	for _, bean := range beans {
+		_, err := tx.Session().ID(bean[0]).Delete(&bean)
+		if err != nil {
+			tx.RollbackTrans()
+		}
+	}
+	return nil
 }

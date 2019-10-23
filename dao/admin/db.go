@@ -11,6 +11,18 @@ type Dao struct {
 	*xorm.Engine
 }
 
+func (d Dao) Delete2Table(beans [][2]interface{}) error {
+	return d.delete2Table(beans)
+}
+
+func (d Dao) InsertMany(ctx context.Context, beans ...interface{}) error {
+	return d.insertMany(beans...)
+}
+
+func (d Dao) JoinMany(ctx context.Context, bean interface{}, table string, query []string, values []interface{}, join [][3]interface{}) (int64, error) {
+	return d.join2Table(bean, table, query, values, join)
+}
+
 func (d Dao) UpdateStruct(ctx context.Context, model interface{}, cols, query []string, values []interface{}) (int64, error) {
 	return d.updateStruct(model, cols, query, values)
 }

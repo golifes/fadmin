@@ -11,21 +11,21 @@ api 分 读 写
 */
 
 type Menu struct {
-	Id         int64     `json:"id"  `        //主键id
-	Category   int       `json:"category"`    //类型  1为目录 2为api
-	Name       string    `json:"name"`        //名称
-	Icon       string    `json:"icon"`        //目录的icon
-	ParentId   string    `json:"parent_id"`   //父id
-	ParentPath string    `json:"parent_path"` //父路径
-	Sort       int       `json:"sort"`        //子菜单排序
-	Hidden     int       `json:"hidden"`      //是否展示
-	Status     int       `json:"status" `
-	Ctime      time.Time `json:"ctime" xorm:"created"` //创建时间
-	Mtime      time.Time `json:"mtime" xorm:"updated"` //更新时间
-	Action     Actions   `json:"action"`
-	Source     Sources   `json:"source"`
-	Did        int64     `json:"did"  ` //冗余字段，为了查询方便
-	Aid        int64     `json:"adi"  `
+	Id         int64   `json:"id"  `        //主键id
+	Category   int     `json:"category"`    //类型  1为目录 2为api
+	Name       string  `json:"name"`        //名称
+	Icon       string  `json:"icon"`        //目录的icon
+	ParentId   string  `json:"parent_id"`   //父id
+	ParentPath string  `json:"parent_path"` //父路径
+	Sort       int     `json:"sort"`        //子菜单排序
+	Hidden     int     `json:"hidden"`      //是否展示
+	Status     int     `json:"status" `
+	Ctime      int     `json:"ctime" xorm:"created"` //创建时间
+	Mtime      int     `json:"mtime" xorm:"updated"` //更新时间
+	Action     Actions `json:"action"`
+	Source     Sources `json:"source"`
+	Did        int64   `json:"did"  ` //冗余字段，为了查询方便
+	Aid        int64   `json:"adi"  `
 }
 
 type Actions []*Action

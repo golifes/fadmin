@@ -11,3 +11,12 @@ type ParamsDomainList struct {
 type ParamsId struct {
 	Id int64 `json:"id"  binding:"required"`
 }
+
+type ParamsAppList struct {
+	Id     int64  `json:"id"`
+	Did    int64  `json:"did"`
+	Name   string `json:"name"`
+	Status int    `json:"status"`
+	Ps     int    `json:"ps"`
+	Pn     int    `json:"pn"`
+}

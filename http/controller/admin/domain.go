@@ -5,6 +5,7 @@ import (
 	"fadmin/pkg/app"
 	"fadmin/pkg/config"
 	"fadmin/pkg/e"
+	"fadmin/pkg/table"
 	"fadmin/tools/utils"
 	"fmt"
 	"net/http"
@@ -123,7 +124,7 @@ func (h HttpAdminHandler) FindDomain(ctx app.GContext) {
 
 	ps, pn := utils.Pagination(p.Ps, p.Pn, 10)
 	domain := make([]admin.Domain, 0)
-	list, count := h.logic.FindOne(g.NewContext(ctx), &domain, "domain", " ctime desc ", query, values, ps, pn)
+	list, count := h.logic.FindOne(g.NewContext(ctx), &domain, table.Domain, " ctime desc ", query, values, ps, pn)
 	m := make(map[string]interface{})
 	m["count"] = count
 	m["data"] = list

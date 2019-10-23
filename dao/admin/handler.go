@@ -16,6 +16,9 @@ type Handler interface {
 	FindOne(ctx context.Context, model interface{}, table, orderBy string, query []string, values []interface{}, ps, pn int) (interface{}, int64)
 	UpdateStruct(ctx context.Context, model interface{}, cols, query []string, values []interface{}) (int64, error)
 	UpdateMap(ctx context.Context, table string, m map[string]interface{}, cols, query []string, values []interface{}) (int64, error)
+	JoinMany(ctx context.Context, bean interface{}, table string, query []string, values []interface{}, join [][3]interface{}) (int64, error)
+	InsertMany(ctx context.Context, beans ...interface{}) error //事物
+	Delete2Table(beans [][2]interface{}) error                  //事物
 }
 
 //var _ DbHandler = Dao(nil)
