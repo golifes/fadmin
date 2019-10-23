@@ -22,6 +22,8 @@ func (e *Engine) admin() {
 		role := r.Group("role")
 		{
 			role.POST("/add", e.AddRole)
+			role.POST("/del", e.DeleteRole)
+			role.GET("/find", e.FindRole)
 		}
 	}
 }

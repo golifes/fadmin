@@ -16,9 +16,9 @@ type Handler interface {
 	FindOne(ctx context.Context, model interface{}, table, orderBy string, query []string, values []interface{}, ps, pn int) (interface{}, int64)
 	UpdateStruct(ctx context.Context, model interface{}, cols, query []string, values []interface{}) (int64, error)
 	UpdateMap(ctx context.Context, table string, m map[string]interface{}, cols, query []string, values []interface{}) (int64, error)
-	JoinMany(ctx context.Context, bean interface{}, table string, query []string, values []interface{}, join [][3]interface{}) (int64, error)
+	FindMany(ctx context.Context, bean interface{}, table, alias, cols, orderBy string, ps, pn int, query []string, values []interface{}, join [][3]interface{}) (interface{}, int64)
 	InsertMany(ctx context.Context, beans ...interface{}) error
-	Delete2Table(beans [][2]interface{}) error
+	DeleteMany(beans [][2]interface{}) error
 	//	table string, cols []string, fields []string, values []interface{}, pn, ps int, model interface{}, orderBy string) (interface{}, error) //表名,字段,条件,分页 ,返回值是结果集和message model是查询结果集的rows映射
 	//Count(ctx context.Context, db string, fields []string, values []interface{}, model interface{}) (int, error)                                //返回
 	//TxInsert(ctx context.Context, table string, fields []string, values []interface{}, model interface{}) error                                 //自动添加创建时间  op表示操作，比如 select
@@ -29,16 +29,16 @@ type Logic struct {
 	Db admin.DbHandler
 }
 
-func (l Logic) Delete2Table(beans [][2]interface{}) error {
-	return l.Db.Delete2Table(beans)
+func (l Logic) DeleteMany(beans [][2]interface{}) error {
+	return l.Db.DeleteMany(beans)
 }
 
 func (l Logic) InsertMany(ctx context.Context, beans ...interface{}) error {
 	return l.Db.InsertMany(ctx, beans...)
 }
 
-func (l Logic) JoinMany(ctx context.Context, bean interface{}, table string, query []string, values []interface{}, join [][3]interface{}) (int64, error) {
-	return l.Db.JoinMany(ctx, bean, table, query, values, join)
+func (l Logic) FindMany(ctx context.Context, bean interface{}, table, alias, cols, orderBy string, ps, pn int, query []string, values []interface{}, join [][3]interface{}) (interface{}, int64) {
+	return l.Db.FindMany(ctx, bean, table, alias, cols, orderBy, ps, pn, query, values, join)
 }
 
 func (l Logic) UpdateStruct(ctx context.Context, model interface{}, cols, query []string, values []interface{}) (int64, error) {

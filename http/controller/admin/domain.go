@@ -69,7 +69,6 @@ func (h HttpAdminHandler) DeleteDomain(ctx app.GContext) {
 		return
 	}
 	g.Json(http.StatusOK, e.Success, affect)
-	return
 }
 
 func (h HttpAdminHandler) UpdateDomain(ctx app.GContext) {

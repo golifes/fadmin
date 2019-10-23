@@ -70,18 +70,22 @@ func (d Dao) updateStruct(bean interface{}, cols, query []string, values []inter
 }
 
 //2表联查
-func (d Dao) join2Table(bean interface{}, table string, query []string, values []interface{}, join [][3]interface{}) (int64, error) {
+func (d Dao) join2Table(bean interface{}, table, alias, cols, orderBy string, ps, pn int, query []string, values []interface{}, join [][3]interface{}) (interface{}, int64) {
 	//mmm := [][3]interface{}{{
 	//	"join", "type", "group.id = user.group_id"},
 	//	{"join", []string{"group", "g"}, "group.id = user.group_id"},}
-
-	session := d.Engine.Table(table)
+	var count int64
+	var err error
+	session := d.Engine.Table(table).Alias(alias).Select(cols)
 	for _, v := range join {
 		session.Join(v[0].(string), v[1], v[2].(string))
 	}
-	count, err := session.Where(strings.Join(query, " "), values...).FindAndCount(bean)
+	count, err = session.Where(strings.Join(query, " "), values...).Limit(ps, ps*pn).OrderBy(orderBy).FindAndCount(bean)
+	if utils.CheckError(err, count) {
+		return bean, count
+	}
 	//count, err := d.Engine.Table(table).Join(joinOperator, tableName, condition, args).Where(strings.Join(query, " "), values...).FindAndCount(bean)
-	return count, err
+	return bean, count
 }
 
 //级联删除
