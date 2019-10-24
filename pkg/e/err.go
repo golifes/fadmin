@@ -16,6 +16,7 @@ var msgDict = map[int]string{
 	DomainNotExist:    "域不存在",
 	AppExist:          "应用已存在",
 	CreateTokenError:  "创建token失败",
+	CodeError:         "验证码错误",
 }
 
 func GetMsg(code int) string {

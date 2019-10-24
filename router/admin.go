@@ -27,5 +27,13 @@ func (e *Engine) admin() {
 			role.POST("/app", e.UpdateRole) //给app重新调整角色
 			role.POST("/name", e.UpdateRoleName)
 		}
+
+		user := r.Group("/user")
+		{
+			user.POST("/forbid", e.ForbidUser)
+			user.POST("/pwd", e.UpdatePwd)
+			user.POST("/phone", e.UpdatePhone)
+			user.POST("/loginPhone", e.LoginPhone) //手机号码登录
+		}
 	}
 }

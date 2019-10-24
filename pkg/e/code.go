@@ -8,6 +8,7 @@ const (
 	Unauthorized = 401 //未授权
 
 	CreateTokenError = 1000
+	CodeError        = 1010
 	NoLogin          = 10000 //未登录
 	ParamLose        = 10010
 	ParamError       = 10020

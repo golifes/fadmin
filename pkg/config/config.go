@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/xormplus/xorm"
 	//"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v7"
 	_ "github.com/go-sql-driver/mysql"
 	//"github.com/olivere/elastic/v7"
 	//"github.com/xormplus/xorm"
@@ -21,6 +22,15 @@ type Config struct {
 		MaxOpen int
 		MaxIdle int
 	}
+
+	Redis struct {
+		Dns      string
+		Pwd      string
+		PoolSize int
+		MaxIdle  int
+		Db       int
+	}
+
 	App struct {
 		Port string
 	}
@@ -32,7 +42,6 @@ type Config struct {
 var (
 	engine *xorm.Engine
 	Port   string
-	nodeId int64
 	//RedisClient *redis.Client
 	//EsClient    *elastic.Client
 )
@@ -41,14 +50,13 @@ func NewConfig(path string) (config Config) {
 	Load(path, &config)
 	config.loadDb()
 	config.httpServer()
-	config.newNodeId()
+	_, _ = config.newNodeId()
 	//config.LoadRedis()
 	//config.LoadElastic()
 	return
 }
 
 func NewDb() *xorm.Engine {
-	//fmt.Println("newDb", engine)
 	return engine
 }
 
@@ -78,15 +86,29 @@ func (c *Config) loadDb() {
 	fmt.Println(dns)
 
 	engine, err = xorm.NewEngine("mysql", dns)
-	ping := engine.Ping()
-	if ping != nil || err != nil {
-		panic(ping)
+
+	if err != nil || engine.Ping() != nil {
+		panic(err)
 	}
+
 	engine.SetMaxIdleConns(c.Db.MaxIdle)
 	engine.SetMaxOpenConns(c.Db.MaxOpen)
 	engine.ShowSQL(c.Db.Show)
+
 }
 
 func (c *Config) httpServer() {
 	Port = c.App.Port
+}
+
+func (c *Config) LoadRedis() {
+	client := redis.NewClient(&redis.Options{
+		Addr:     c.Redis.Dns,
+		Password: c.Redis.Pwd, // no password set
+		DB:       c.Redis.Db,
+	})
+
+	if _, err := client.Ping().Result(); err != nil {
+		panic(err)
+	}
 }
