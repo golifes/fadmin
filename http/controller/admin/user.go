@@ -59,24 +59,28 @@ func (h HttpAdminHandler) LoginPhone(ctx app.GContext) {
 		return
 	}
 
-	user := h.logic.GetOne(g.NewContext(ctx), &admin.User{Phone: p.Phone, Did: p.Did, Aid: p.Aid, Status: 1}, "id")
+	user := h.logic.GetOne(g.NewContext(ctx), &admin.User{Phone: p.Phone, Did: p.Did, Aid: p.Aid}, "id")
+
 	m := make(map[string]interface{})
 	var uid int64
 	if user == nil {
-		uid := config.NewNodeId()
+		uid = config.NewNodeId()
 		err = h.logic.InsertMany(g.NewContext(ctx), &admin.User{Id: uid, Phone: p.Phone, Pwd: utils.EncodeMd5(p.Phone), Did: p.Did, Aid: p.Aid})
 		if !utils.CheckError(err, "insert") {
 			g.Json(http.StatusOK, e.Errors, p.Phone)
 			return
 		}
-
 	} else {
 		u := user.(*admin.User)
+		if u.Status != 1 {
+			g.Json(http.StatusOK, e.Forbid, p.Phone)
+			return
+		}
 		uid = u.Id
 	}
 
 	token, err := jwt.GenerateToken(p.Phone, uid, p.Did, p.Aid, 1)
-	if utils.CheckError(err, token) {
+	if !utils.CheckError(err, token) {
 		g.Json(http.StatusOK, e.CreateTokenError, p.Phone)
 		return
 	}

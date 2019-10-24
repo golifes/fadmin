@@ -110,7 +110,7 @@ func (d Dao) delete2Table(beans [][2]interface{}) error {
 
 func (d Dao) getOne(bean interface{}, cols ...string) interface{} {
 	get, err := d.Engine.Cols(cols...).Get(bean)
-	if utils.CheckError(err, get) {
+	if utils.CheckError(err, get) && get {
 		return bean
 	}
 	return nil
