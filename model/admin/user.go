@@ -10,10 +10,13 @@ type User struct {
 	Nick   string `json:"name"  `               //昵称
 	Pwd    string `json:"pwd" `                 //密码
 	Phone  string `json:"phone"`                //电话号码
+	Status int    `json:"status"`               //
 	Ctime  int    `json:"ctime" xorm:"created"` //创建时间
 	Mtime  int    `json:"mtime" xorm:"updated"` //更新时间
-	Openid string `json:"openid"`               //微信小程序唯一标识
-	Data   string `json:"data"`                 //备用字段
+	Did    int64  `json:"did"`                  //
+	Aid    int64  `json:"aid"`
+	Openid string `json:"openid"` //微信小程序唯一标识
+	Data   string `json:"data"`   //备用字段
 }
 
 //需要其他的查询参数继续添加

@@ -15,6 +15,7 @@ var msgDict = map[int]string{
 	UpdateWxError:     "更新微信公众号信息失败",
 	DomainNotExist:    "域不存在",
 	AppExist:          "应用已存在",
+	CreateTokenError:  "创建token失败",
 }
 
 func GetMsg(code int) string {

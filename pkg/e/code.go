@@ -7,9 +7,10 @@ const (
 	Forbid       = 403 //被禁用
 	Unauthorized = 401 //未授权
 
-	NoLogin    = 10000 //未登录
-	ParamLose  = 10010
-	ParamError = 10020
+	CreateTokenError = 1000
+	NoLogin          = 10000 //未登录
+	ParamLose        = 10010
+	ParamError       = 10020
 	//user
 	UserNotExist     = 100000 //用户不存在
 	UserExist        = 100001 //用户已存在

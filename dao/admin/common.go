@@ -29,7 +29,6 @@ func (d Dao) insertMany(beans ...interface{}) error {
 }
 
 func (d Dao) exist(bean ...interface{}) bool {
-	//exist, err := d.Engine.Exist(&admin.Domain{Name:"用户管理"})
 	exist, err := d.Engine.Exist(bean...)
 
 	if exist && utils.CheckError(err, exist) {
@@ -103,8 +102,16 @@ func (d Dao) delete2Table(beans [][2]interface{}) error {
 	for _, bean := range beans {
 		_, err := tx.Session().ID(bean[0]).Delete(&bean)
 		if err != nil {
-			tx.RollbackTrans()
+			return tx.RollbackTrans()
 		}
+	}
+	return nil
+}
+
+func (d Dao) getOne(bean interface{}, cols ...string) interface{} {
+	get, err := d.Engine.Cols(cols...).Get(bean)
+	if utils.CheckError(err, get) {
+		return bean
 	}
 	return nil
 }

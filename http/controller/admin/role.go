@@ -91,12 +91,78 @@ func (h HttpAdminHandler) FindRole(ctx app.GContext) {
 	ps, pn := utils.Pagination(p.Ps, p.Pn, 10)
 	domain := make([]admin.ParamsRoleList, 0)
 	//list, count := h.logic.FindOne(g.NewContext(ctx), &domain, table.Domain, " ar.ctime desc ", query, values, ps, pn)
-	join := [][3]interface{}{{"inner", []string{"role", "r"}, "r.id = ar.rid"}}
-	list, count := h.logic.FindMany(g.NewContext(ctx), &domain, table.DomainAppRole, "ar", "ar.id,ar.did,ar.aid,ar.rid,ar.status,ar.ctime,ar.mtime,r.name", "ar.ctime desc ", ps, pn, query, values, join)
+	join := [][3]interface{}{{"inner", []string{"role", "r"}, "r.id = ar.rid"}, {"inner", []string{"domain_app", "a"}, "a.id = ar.aid"}}
+	list, count := h.logic.FindMany(g.NewContext(ctx), &domain, table.DomainAppRole, "ar", "ar.id,ar.did,a.name as aname,ar.rid,ar.status,ar.ctime,ar.mtime,r.name", "ar.ctime desc ", ps, pn, query, values, join)
 
 	m := make(map[string]interface{})
 	m["count"] = count
 	m["data"] = list
 	g.Json(http.StatusOK, e.Success, m)
+
+}
+
+/**
+更新角色：只能修改这个角色属于那个应用
+*/
+
+func (h HttpAdminHandler) UpdateRole(ctx app.GContext) {
+	var p admin.ParamsRoleUpdate
+	g, err := h.common(ctx, &p)
+	if err != nil {
+		return
+	}
+
+	/**
+	先查询did 和aid是否是属于同一个域下面的
+	*/
+	exist := h.logic.Exist(g.NewContext(ctx), &admin.DomainAppRole{Did: p.Did, Id: p.Aid})
+	if !exist {
+		g.Json(http.StatusOK, e.DomainNotExist, "")
+		return
+
+	}
+	//拼接更新字段
+	var cols []string
+	if p.Status != 0 {
+		cols = append(cols, "status")
+	}
+	if p.Aid != 0 {
+		cols = append(cols, "aid")
+	}
+
+	var role admin.DomainAppRole
+	affect, err := h.logic.UpdateStruct(g.NewContext(ctx), role, cols, []string{" id = ? "}, []interface{}{p.Id})
+	if !utils.CheckError(err, affect) {
+		g.Json(http.StatusOK, e.UpdateWxError, p.Id)
+	} else {
+		g.Json(http.StatusOK, e.Success, affect)
+	}
+}
+
+/**
+修改角色名称
+*/
+
+func (h HttpAdminHandler) UpdateRoleName(ctx app.GContext) {
+	var p admin.ParamsRoleName
+	g, err := h.common(ctx, &p)
+	if err != nil {
+		return
+	}
+
+	exist := h.logic.Exist(g.NewContext(ctx), &admin.Role{Id: p.Rid})
+	if !exist {
+		g.Json(http.StatusOK, e.DomainNotExist, "")
+		return
+
+	}
+
+	var role admin.DomainAppRole
+	affect, err := h.logic.UpdateStruct(g.NewContext(ctx), role, []string{"name"}, []string{" id = ? "}, []interface{}{p.Rid})
+	if !utils.CheckError(err, affect) {
+		g.Json(http.StatusOK, e.Errors, p.Name)
+	} else {
+		g.Json(http.StatusOK, e.Success, affect)
+	}
 
 }

@@ -3,8 +3,8 @@ package router
 func (e *Engine) admin() {
 	r := e.Group("/admin")
 	{
-		//r.POST("/register", e.Register)
-		//r.POST("/login", e.Login)
+		r.POST("/register", e.Register)
+		r.POST("/login", e.Login)
 		domain := r.Group("domain")
 		{
 			domain.POST("/add", e.AddDomain)
@@ -24,6 +24,8 @@ func (e *Engine) admin() {
 			role.POST("/add", e.AddRole)
 			role.POST("/del", e.DeleteRole)
 			role.GET("/find", e.FindRole)
+			role.POST("/app", e.UpdateRole) //给app重新调整角色
+			role.POST("/name", e.UpdateRoleName)
 		}
 	}
 }

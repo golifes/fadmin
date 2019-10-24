@@ -25,6 +25,7 @@ func InitRouter(path ...string) *Engine {
 	//	func() string { return config.NewHttpPort() }}
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+	//r.Use(middleware.JWT())
 	//r.Use(middleware.DummyMiddleware())
 	r.admin()
 	r.weiXin()

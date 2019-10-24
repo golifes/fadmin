@@ -14,6 +14,7 @@ type Handler interface {
 	Exist(ctx context.Context, model interface{}) bool
 	Delete(ctx context.Context, id int64, model interface{}) (int64, error)
 	FindOne(ctx context.Context, model interface{}, table, orderBy string, query []string, values []interface{}, ps, pn int) (interface{}, int64)
+	GetOne(ctx context.Context, model interface{}, cols ...string) interface{}
 	UpdateStruct(ctx context.Context, model interface{}, cols, query []string, values []interface{}) (int64, error)
 	UpdateMap(ctx context.Context, table string, m map[string]interface{}, cols, query []string, values []interface{}) (int64, error)
 	FindMany(ctx context.Context, bean interface{}, table, alias, cols, orderBy string, ps, pn int, query []string, values []interface{}, join [][3]interface{}) (interface{}, int64)

@@ -11,6 +11,10 @@ type Dao struct {
 	*xorm.Engine
 }
 
+func (d Dao) GetOne(ctx context.Context, model interface{}, cols ...string) interface{} {
+	return d.getOne(model, cols...)
+}
+
 func (d Dao) DeleteMany(beans [][2]interface{}) error {
 	return d.delete2Table(beans)
 }
