@@ -34,13 +34,14 @@ func (e *Engine) admin() {
 			user.POST("/pwd", e.UpdatePwd)
 			user.POST("/phone", e.UpdatePhone)
 			user.POST("/loginPhone", e.LoginPhone) //手机号码登录
+			user.POST("/gid", e.UserGroup)         //给用户分配组
 		}
 		group := r.Group("/group")
 		{
 			group.POST("/add", e.AddGroup)
 			group.POST("/del", e.DeleteGroup)
 			group.POST("/update", e.UpdateGroup)
-			group.GET("/find", e.FindGroup)
+			group.GET("/find", e.FindGroup) //查询组
 		}
 	}
 }

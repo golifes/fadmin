@@ -114,3 +114,25 @@ func (h HttpAdminHandler) FindGroup(ctx app.GContext) {
 	m["data"] = list
 	g.Json(http.StatusOK, e.Success, m)
 }
+
+//给用户分配组
+func (h HttpAdminHandler) UserGroup(ctx app.GContext) {
+	var p admin.UserGroup
+	g, err := h.common(ctx, &p)
+	if err != nil {
+		return
+	}
+
+	exist := h.logic.Exist(g.NewContext(ctx), &admin.Group{Id: p.Gid})
+	if !exist {
+		g.Json(http.StatusOK, e.DomainExist, "")
+		return
+	}
+
+	affect, err := h.logic.UpdateMap(g.NewContext(ctx), table.User, map[string]interface{}{"gid": p.Gid}, []string{"gid"}, []string{"id = ? "}, []interface{}{p.Uid})
+	if !utils.CheckError(err, affect) {
+		g.Json(http.StatusOK, e.UpdateWxError, p.Uid)
+	} else {
+		g.Json(http.StatusOK, e.Success, affect)
+	}
+}
