@@ -10,6 +10,7 @@ const (
 	CreateTokenError = 1000
 	CodeError        = 1010
 	NoLogin          = 10000 //未登录
+	RequestError     = 10001
 	ParamLose        = 10010
 	ParamError       = 10020
 	//user
@@ -28,4 +29,6 @@ const (
 	AppExist          = 100040
 	WxExist           = 100100
 	UpdateWxError     = 100101
+
+	GroupExist = 100110
 )

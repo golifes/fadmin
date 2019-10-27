@@ -14,9 +14,10 @@ type User struct {
 	Ctime  int    `json:"ctime" xorm:"created"` //创建时间
 	Mtime  int    `json:"mtime" xorm:"updated"` //更新时间
 	Did    int64  `json:"did"`                  //
-	Aid    int64  `json:"aid"`
-	Openid string `json:"openid"` //微信小程序唯一标识
-	Data   string `json:"data"`   //备用字段
+	Aid    int64  `json:"aid"`                  //
+	Gid    int    `json:"gid"`                  //
+	Openid string `json:"openid"`               //微信小程序唯一标识
+	Data   string `json:"data"`                 //备用字段
 }
 
 //需要其他的查询参数继续添加

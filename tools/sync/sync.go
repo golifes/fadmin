@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fadmin/model/wx"
+	"fadmin/model/admin"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/xormplus/xorm"
@@ -22,11 +22,11 @@ func main() {
 		panic(ping)
 	}
 
-	//EngDb.Sync2(new(admin.DomainApp))
+	EngDb.Sync2(new(admin.Group))
 	//EngDb.Sync2(new(admin.DomainAppRole))
 	//EngDb.Sync2(new(admin.DomainAppUser))
-	EngDb.Sync2(new(wx.WeiXinList))
-	EngDb.Sync2(new(wx.WeiXin))
+	//EngDb.Sync2(new(wx.WeiXinList))
+	//EngDb.Sync2(new(wx.WeiXin))
 	//EngDb.Sync2(new(admin.Group))
 	//EngDb.Sync2(new(admin.Role))
 	//EngDb.Sync2(new(admin.User))

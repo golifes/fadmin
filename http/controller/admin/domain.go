@@ -20,11 +20,12 @@ func (h HttpAdminHandler) ExistDomainApp(g app.G, ctx app.GContext, did, aid int
 
 func (h HttpAdminHandler) AddDomain(ctx app.GContext) {
 	var p admin.Domain
+	//domian := getDomian()
 	g, err := h.common(ctx, &p)
 	if err != nil {
 		return
 	}
-
+	//putDomain(domian)
 	exist := h.logic.Exist(g.NewContext(ctx), &admin.Domain{Name: p.Name})
 	if exist {
 		g.Json(http.StatusOK, e.DomainExist, "")

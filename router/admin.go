@@ -35,5 +35,12 @@ func (e *Engine) admin() {
 			user.POST("/phone", e.UpdatePhone)
 			user.POST("/loginPhone", e.LoginPhone) //手机号码登录
 		}
+		group := r.Group("/group")
+		{
+			group.POST("/add", e.AddGroup)
+			group.POST("/del", e.DeleteGroup)
+			group.POST("/update", e.UpdateGroup)
+			group.GET("/find", e.FindGroup)
+		}
 	}
 }

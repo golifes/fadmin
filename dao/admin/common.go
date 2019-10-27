@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"errors"
 	"fadmin/tools/utils"
 	"strings"
 )
@@ -11,6 +12,9 @@ func (d Dao) insertOne(beans ...interface{}) error {
 }
 
 func (d Dao) insertMany(beans ...interface{}) error {
+	if beans == nil {
+		return errors.New("模型为空")
+	}
 	session := d.Engine.NewSession()
 	defer session.Close()
 	tx, err := session.BeginTrans()

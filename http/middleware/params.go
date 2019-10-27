@@ -27,19 +27,9 @@ func DummyMiddleware() gin.HandlerFunc {
 				ctx.Abort()
 			} else {
 				for _, v := range m {
-					//这里做字符串参数校验
 					log.Printf("参数值是%s", v)
-					//if v == "" {
-					//	flag = true
-					//}
 				}
 			}
-			//
-			//if flag {
-			//	ctx.Abort()
-			//	ctx.JSON(http.StatusOK, "参数异常")
-			//	return
-			//}
 		}
 		ctx.Request.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 		ctx.Next()

@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"log"
+	"regexp"
 )
 
 func CheckError(err error, v interface{}) bool {
@@ -57,4 +58,18 @@ func Slice(query []string, values []interface{}, key string, value interface{}) 
 		values = append(values, value)
 	}
 	return query, values
+}
+
+var xss = regexp.MustCompile("[%--`~!@#$^&*()=|{}':;<>/?]")
+
+func Xss(m map[string]interface{}) bool {
+	for _, v := range m {
+		switch v.(type) {
+		case string:
+			return xss.MatchString(v.(string))
+		default:
+			return false
+		}
+	}
+	return false
 }
