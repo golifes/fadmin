@@ -42,6 +42,12 @@ func (e *Engine) admin() {
 			group.POST("/del", e.DeleteGroup)
 			group.POST("/update", e.UpdateGroup)
 			group.GET("/find", e.FindGroup) //查询组
+			//给每个组绑定一个默认得权限,在创建组得时候分配权限
 		}
+
+		//先做权限部分
+
+		//角色和权限绑定 (组)/人和角色绑定
+
 	}
 }
