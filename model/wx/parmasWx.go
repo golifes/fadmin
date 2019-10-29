@@ -5,6 +5,7 @@ import "time"
 type WeiXinKey struct {
 	Biz string `json:"biz" binding:"required"`
 	Key string `json:"key" binding:"required"`
+	Uin string `json:"uin" binding:"required"`
 }
 
 type Wx struct {

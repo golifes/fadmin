@@ -43,7 +43,7 @@ func (h HttpWxHandler) UpdateWxKey(ctx app.GContext) {
 		return
 	}
 
-	affect, err := h.logic.UpdateStruct(g.NewContext(ctx), wx.WeiXin{Key: p.Key}, []string{"key"}, []string{"biz = ? "}, []interface{}{p.Biz})
+	affect, err := h.logic.UpdateStruct(g.NewContext(ctx), wx.WeiXin{Key: p.Key}, []string{"key", "uin"}, []string{"biz = ? "}, []interface{}{p.Biz})
 	if !utils.CheckError(err, affect) {
 		g.Json(http.StatusOK, e.UpdateWxError, p.Biz)
 	} else {
@@ -143,4 +143,9 @@ func (h HttpWxHandler) WxList(ctx app.GContext) {
 	m["count"] = count
 	m["list"] = list
 	g.Json(http.StatusOK, e.Success, m)
+}
+
+//获取多条数据
+func (h HttpWxHandler) FindBizUinKey(ctx app.GContext) {
+
 }
