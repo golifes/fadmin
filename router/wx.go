@@ -9,5 +9,6 @@ func (e *Engine) weiXin() {
 		r.GET("/biz", e.FindWxBiz)    //获取公号列表数据
 		r.POST("/forbid", e.ForBidWx) //禁用微信
 		r.GET("/list", e.WxList)
+		r.GET("/key", e.FindBizUinKey)
 	}
 }

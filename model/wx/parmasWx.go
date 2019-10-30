@@ -38,3 +38,7 @@ type WxList struct {
 	Pn        int       `json:"pn"`                      //分页
 	OrderBy   string    `json:"order_by"`                //排序
 }
+
+type Ps struct {
+	Ps int `json:"ps"`
+}

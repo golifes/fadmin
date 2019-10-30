@@ -147,5 +147,17 @@ func (h HttpWxHandler) WxList(ctx app.GContext) {
 
 //获取多条数据
 func (h HttpWxHandler) FindBizUinKey(ctx app.GContext) {
+	//不接受任何参数
+	var p wx.Ps
+	g, err := h.common(ctx, &p)
+	if err != nil {
+		return
+	}
+	weiXin := make([]wx.WeiXinKey, 0)
+	list, count := h.logic.FindOne(g.NewContext(ctx), &weiXin, "wei_xin", "ctime desc ", nil, nil, p.Ps, 1)
+	m := make(map[string]interface{})
+	m["count"] = count
+	m["list"] = list
+	g.Json(http.StatusOK, e.Success, m)
 
 }
