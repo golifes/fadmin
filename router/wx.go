@@ -10,5 +10,7 @@ func (e *Engine) weiXin() {
 		r.POST("/forbid", e.ForBidWx) //禁用微信
 		r.GET("/list", e.WxList)
 		r.GET("/key", e.FindBizUinKey)
+
+		//差一个入库详情页和列表数据接口
 	}
 }

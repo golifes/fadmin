@@ -3,12 +3,11 @@ package config
 import (
 	"fadmin/tools/snowflake"
 	"fmt"
-	"github.com/xormplus/xorm"
-	//"github.com/go-redis/redis"
 	"github.com/go-redis/redis/v7"
 	_ "github.com/go-sql-driver/mysql"
-	//"github.com/olivere/elastic/v7"
-	//"github.com/xormplus/xorm"
+	"github.com/olivere/elastic/v7"
+	"github.com/xormplus/xorm"
+	"log"
 )
 
 type Config struct {
@@ -30,6 +29,10 @@ type Config struct {
 		MaxIdle  int
 		Db       int
 	}
+	Es struct {
+		Host  string //es host
+		Index string // es index
+	}
 
 	App struct {
 		Port string
@@ -40,8 +43,11 @@ type Config struct {
 }
 
 var (
-	engine *xorm.Engine
-	Port   string
+	engine      *xorm.Engine
+	Port        string
+	RedisClient *redis.Client
+	EsClient    *elastic.Client
+	EsIndex     string
 	//RedisClient *redis.Client
 	//EsClient    *elastic.Client
 )
@@ -51,8 +57,8 @@ func NewConfig(path string) (config Config) {
 	config.loadDb()
 	config.httpServer()
 	_, _ = config.newNodeId()
-	//config.LoadRedis()
-	//config.LoadElastic()
+	config.LoadRedis()
+	config.LoadElastic()
 	return
 }
 
@@ -107,8 +113,32 @@ func (c *Config) LoadRedis() {
 		Password: c.Redis.Pwd, // no password set
 		DB:       c.Redis.Db,
 	})
-
 	if _, err := client.Ping().Result(); err != nil {
 		panic(err)
+	}
+}
+
+func (c *Config) LoadElastic() {
+	var err error
+	EsIndex = c.Es.Index
+	//EsClient, err = elastic.NewSimpleClient(elastic.SetURL(c.Es.Host))
+	//if err != nil {
+	//	log.Printf("elastic conn is error %s", err)
+	//}
+	//
+	//info := elasticsearch.Config{
+	//	Addresses: []string{""},
+	//	Transport: &http.Transport{
+	//		MaxIdleConnsPerHost:   10,
+	//		ResponseHeaderTimeout: 500 * time.Millisecond,
+	//		DialContext:           (&net.Dialer{Timeout: 2 * time.Second}).DialContext,
+	//		TLSClientConfig: &tls.Config{
+	//			MinVersion: tls.VersionTLS11,
+	//			// ...
+	//		},
+	//	},
+	//}
+	if EsClient, err = elastic.NewClient(elastic.SetURL(c.Es.Host)); err != nil {
+		log.Printf("elastic conn is error %v", err)
 	}
 }

@@ -8,6 +8,8 @@ import (
 	"fadmin/tools/utils"
 	"fmt"
 	"net/http"
+	"strings"
+	"time"
 )
 
 /**
@@ -160,4 +162,44 @@ func (h HttpWxHandler) FindBizUinKey(ctx app.GContext) {
 	m["list"] = list
 	g.Json(http.StatusOK, e.Success, m)
 
+}
+
+func (h HttpWxHandler) AddWxList(ctx app.GContext) {
+	g := app.G{ctx}
+
+	var p wx.ParamsAddWxList
+	code := e.Success
+	if !utils.CheckError(ctx.ShouldBindJSON(&p), "addList") {
+		code = e.ParamError
+		g.Json(http.StatusOK, code, "")
+		return
+	}
+
+	ids := utils.FindBizStr(p.Url)
+	biz := ""
+	var w wx.WeiXinList
+	if ids != nil {
+		biz = ids[0]
+		w.Id = p.Id
+		w.Biz = biz
+		w.ArticleId = utils.EncodeMd5(strings.Join(ids, "_"))
+	} else {
+		//log  url 提取idx等参数异常
+		code = e.ParamError
+		g.Json(http.StatusOK, code, "")
+		return
+	}
+	//todo 先查询ArticleId是否存在，存在就不入库，不存在就存在入库
+	if h.logic.Exist(g.NewContext(ctx), &w) {
+		g.Json(http.StatusOK, e.Errors, "")
+		return
+	}
+	w.Ptime = time.Unix(int64(p.Ptime), 0)
+	w.Url = p.Url
+	w.Title = p.Title
+	if !utils.CheckError(h.logic.InsertOne(g.NewContext(ctx), w), "insert addList") {
+		code = e.Errors
+	}
+	g.Json(http.StatusOK, code, "")
+	return
 }

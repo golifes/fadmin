@@ -3,6 +3,7 @@ package wx
 import "time"
 
 type WeiXinKey struct {
+	Id  int64  `json:"id"`
 	Biz string `json:"biz" binding:"required"`
 	Key string `json:"key" binding:"required"`
 	Uin string `json:"uin" binding:"required"`
@@ -41,4 +42,11 @@ type WxList struct {
 
 type Ps struct {
 	Ps int `json:"ps"`
+}
+
+type ParamsAddWxList struct {
+	Id    int64  `json:"id"`
+	Url   string `json:"url"  binding:"required" `   //文章url
+	Title string `json:"title"  binding:"required" ` //文章标题
+	Ptime int64  `json:"ptime"`                      //发布时间
 }

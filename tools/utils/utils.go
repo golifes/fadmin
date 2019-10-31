@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"strings"
 )
 
 func CheckError(err error, v interface{}) bool {
@@ -72,4 +73,39 @@ func Xss(m map[string]interface{}) bool {
 		}
 	}
 	return false
+}
+
+func FindBizStr(url string) (arr []string) {
+	bizIndex := strings.Index(url, "__biz=")
+	if bizIndex == -1 {
+		return nil
+	}
+	bizEnd := strings.Index(url[bizIndex:], "&")
+	biz := url[bizIndex+6 : bizEnd+bizIndex]
+	arr = append(arr, biz)
+
+	//mid
+	midIndex := strings.Index(url, "mid=")
+	if midIndex == -1 {
+		midIndex = strings.Index(url, "MID=")
+	}
+	if midIndex == -1 {
+		return nil
+	}
+	midEnd := strings.Index(url[midIndex:], "&")
+	mid := url[midIndex+4 : midIndex+midEnd]
+	arr = append(arr, mid)
+
+	idxIndex := strings.Index(url, "&idx=")
+	if idxIndex == -1 {
+		idxIndex = strings.Index(url, "&IDX=")
+	}
+	if midIndex == -1 {
+		return nil
+	}
+	idxEnd := strings.Index(url[idxIndex+5:], "&")
+	idx := url[idxIndex+5 : idxEnd+idxIndex+5]
+	arr = append(arr, idx)
+
+	return
 }
