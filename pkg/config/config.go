@@ -46,7 +46,7 @@ var (
 	engine      *xorm.Engine
 	Port        string
 	RedisClient *redis.Client
-	EsClient    *elastic.Client
+	es          *elastic.Client
 	EsIndex     string
 	//RedisClient *redis.Client
 	//EsClient    *elastic.Client
@@ -64,6 +64,9 @@ func NewConfig(path string) (config Config) {
 
 func NewDb() *xorm.Engine {
 	return engine
+}
+func NewEs() *elastic.Client {
+	return es
 }
 
 func (c *Config) newNodeId() (*snowflake.Node, error) {
@@ -138,7 +141,7 @@ func (c *Config) LoadElastic() {
 	//		},
 	//	},
 	//}
-	if EsClient, err = elastic.NewClient(elastic.SetURL(c.Es.Host)); err != nil {
+	if es, err = elastic.NewClient(elastic.SetURL(c.Es.Host)); err != nil {
 		log.Printf("elastic conn is error %v", err)
 	}
 }

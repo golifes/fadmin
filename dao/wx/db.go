@@ -5,16 +5,18 @@ import (
 	"errors"
 	"fadmin/model/wx"
 	"fadmin/pkg/config"
+	"github.com/olivere/elastic/v7"
 	"github.com/xormplus/xorm"
 )
 
 type Dao struct {
 	config.Config
 	*xorm.Engine
+	es *elastic.Client
 }
 
 func NewDb(path string) *Dao {
-	return &Dao{config.NewConfig(path), config.NewDb()}
+	return &Dao{config.NewConfig(path), config.NewDb(), config.NewEs()}
 }
 
 func (d Dao) InsertOne(ctx context.Context, model interface{}) error {
