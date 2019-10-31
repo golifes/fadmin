@@ -1,9 +1,30 @@
 package wx
 
 import (
+	"context"
+	"encoding/json"
+	"fadmin/pkg/e"
 	"fadmin/tools/utils"
 	"strings"
 )
+
+/**
+其实可以传一个string data,为了数据准确性和安全性,绑定struct
+*/
+
+func (d Dao) addEs(id string, bean interface{}) int {
+	data := ""
+	marshal, err := json.Marshal(bean)
+	if err == nil {
+		data = string(marshal)
+	}
+
+	do, err := d.es.Index().Index(d.index).Id(id).BodyString(data).Do(context.Background())
+	if utils.CheckError(err, do) {
+		return e.Success
+	}
+	return e.Errors
+}
 
 func (d Dao) insertOne(beans ...interface{}) error {
 	_, err := d.Engine.Insert(beans)
@@ -11,7 +32,6 @@ func (d Dao) insertOne(beans ...interface{}) error {
 }
 
 func (d Dao) exist(bean ...interface{}) bool {
-	//exist, err := d.Engine.Exist(&admin.Domain{Name:"用户管理"})
 	exist, err := d.Engine.Exist(bean...)
 
 	if exist && utils.CheckError(err, exist) {
@@ -21,7 +41,6 @@ func (d Dao) exist(bean ...interface{}) bool {
 }
 
 func (d Dao) updateMap(table string, m map[string]interface{}, cols, query []string, values []interface{}) (int64, error) {
-	//affected, err := engine.Table(new(User)).Id(id).Update(map[string]interface{}{"age":0})
 	return d.Engine.Table(table).Where(strings.Join(query, ""), values...).Cols(cols...).Update(m)
 }
 func (d Dao) updateStruct(bean interface{}, cols, query []string, values []interface{}) (int64, error) {

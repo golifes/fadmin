@@ -43,11 +43,11 @@ type Config struct {
 }
 
 var (
-	engine      *xorm.Engine
-	Port        string
-	RedisClient *redis.Client
-	es          *elastic.Client
-	EsIndex     string
+	engine *xorm.Engine
+	port   string
+	rdx    *redis.Client
+	es     *elastic.Client
+	index  string
 	//RedisClient *redis.Client
 	//EsClient    *elastic.Client
 )
@@ -69,6 +69,14 @@ func NewEs() *elastic.Client {
 	return es
 }
 
+func NewEsIndex() string {
+	return index
+}
+
+func NewRdx() *redis.Client {
+	return rdx
+}
+
 func (c *Config) newNodeId() (*snowflake.Node, error) {
 	node, err := snowflake.NewNode(c.Node.Id)
 	return node, err
@@ -83,7 +91,7 @@ func NewNodeId() int64 {
 	return node.Id()
 }
 func NewHttpPort() string {
-	return Port
+	return port
 }
 func (c *Config) loadDb() {
 	var err error
@@ -107,41 +115,28 @@ func (c *Config) loadDb() {
 }
 
 func (c *Config) httpServer() {
-	Port = c.App.Port
+	port = c.App.Port
 }
 
 func (c *Config) LoadRedis() {
-	client := redis.NewClient(&redis.Options{
+	rdx = redis.NewClient(&redis.Options{
 		Addr:     c.Redis.Dns,
 		Password: c.Redis.Pwd, // no password set
 		DB:       c.Redis.Db,
 	})
-	if _, err := client.Ping().Result(); err != nil {
+	if _, err := rdx.Ping().Result(); err != nil {
 		panic(err)
 	}
 }
 
+/**
+es简单的连接
+*/
 func (c *Config) LoadElastic() {
 	var err error
-	EsIndex = c.Es.Index
-	//EsClient, err = elastic.NewSimpleClient(elastic.SetURL(c.Es.Host))
-	//if err != nil {
-	//	log.Printf("elastic conn is error %s", err)
-	//}
-	//
-	//info := elasticsearch.Config{
-	//	Addresses: []string{""},
-	//	Transport: &http.Transport{
-	//		MaxIdleConnsPerHost:   10,
-	//		ResponseHeaderTimeout: 500 * time.Millisecond,
-	//		DialContext:           (&net.Dialer{Timeout: 2 * time.Second}).DialContext,
-	//		TLSClientConfig: &tls.Config{
-	//			MinVersion: tls.VersionTLS11,
-	//			// ...
-	//		},
-	//	},
-	//}
-	if es, err = elastic.NewClient(elastic.SetURL(c.Es.Host)); err != nil {
-		log.Printf("elastic conn is error %v", err)
+	index = c.Es.Index
+	es, err = elastic.NewSimpleClient(elastic.SetURL(c.Es.Host))
+	if err != nil {
+		log.Printf("elastic conn is error %s", err)
 	}
 }

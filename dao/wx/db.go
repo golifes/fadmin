@@ -12,11 +12,12 @@ import (
 type Dao struct {
 	config.Config
 	*xorm.Engine
-	es *elastic.Client
+	es    *elastic.Client
+	index string
 }
 
 func NewDb(path string) *Dao {
-	return &Dao{config.NewConfig(path), config.NewDb(), config.NewEs()}
+	return &Dao{config.NewConfig(path), config.NewDb(), config.NewEs(), config.NewEsIndex()}
 }
 
 func (d Dao) InsertOne(ctx context.Context, model interface{}) error {
