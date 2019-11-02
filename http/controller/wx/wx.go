@@ -45,7 +45,7 @@ func (h HttpWxHandler) UpdateWxKey(ctx app.GContext) {
 		return
 	}
 
-	affect, err := h.logic.UpdateStruct(g.NewContext(ctx), wx.WeiXin{Key: p.Key}, []string{"key", "uin"}, []string{"biz = ? "}, []interface{}{p.Biz})
+	affect, err := h.logic.UpdateStruct(g.NewContext(ctx), wx.WeiXin{Key: p.Key, Uin: p.Uin}, []string{"key", "uin"}, []string{"biz = ? "}, []interface{}{p.Biz})
 	if !utils.CheckError(err, affect) {
 		g.Json(http.StatusOK, e.UpdateWxError, p.Biz)
 	} else {
