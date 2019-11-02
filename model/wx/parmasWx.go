@@ -3,10 +3,11 @@ package wx
 import "time"
 
 type WeiXinKey struct {
-	Id  int64  `json:"id"`
-	Biz string `json:"biz" binding:"required"`
-	Key string `json:"key" binding:"required"`
-	Uin string `json:"uin" binding:"required"`
+	Id   int64  `json:"id"`
+	WxId string `json:"wx_id"`
+	Biz  string `json:"biz" binding:"required"`
+	Key  string `json:"key" binding:"required"`
+	Uin  string `json:"uin" binding:"required"`
 }
 
 type Wx struct {

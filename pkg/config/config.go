@@ -57,7 +57,7 @@ func NewConfig(path string) (config Config) {
 	config.loadDb()
 	config.httpServer()
 	_, _ = config.newNodeId()
-	config.LoadRedis()
+	//config.LoadRedis()
 	config.LoadElastic()
 	return
 }
