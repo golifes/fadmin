@@ -8,3 +8,8 @@ type ParamsGroup struct {
 
 type ParamsUserGroup struct {
 }
+
+type ParamsGroupRole struct {
+	Rid int64 `json:"rid" binding:"required"`
+	Gid int64 `json:"gid" binding:"required"`
+}

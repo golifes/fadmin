@@ -12,7 +12,7 @@ func main() {
 	dns := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		"root",
 		"abc123456",
-		"58.87.64.219",
+		"49.232.48.41",
 		"fadmin")
 	fmt.Println(dns)
 	EngDb, err := xorm.NewEngine("mysql", dns)

@@ -13,6 +13,7 @@ import (
 
 /**
 对角色的curd
+角色和用户绑定,和部门没关系，部门只是一个归档作用
 */
 
 //添加角色
@@ -36,7 +37,6 @@ func (h HttpAdminHandler) AddRole(ctx app.GContext) {
 		g.Json(http.StatusOK, e.Success, p.Name)
 	} else {
 		g.Json(http.StatusOK, e.Errors, p.Name)
-
 	}
 }
 
@@ -164,5 +164,39 @@ func (h HttpAdminHandler) UpdateRoleName(ctx app.GContext) {
 	} else {
 		g.Json(http.StatusOK, e.Success, affect)
 	}
+}
 
+/**
+给人绑定角色 userRole
+params:	{
+
+	"uid":"",#用户id
+	"rid":"",#角色id
+}
+*/
+
+func (h HttpAdminHandler) AddUserRole(ctx app.GContext) {
+
+	/**
+	todo
+	aid did在用户信息中获取
+	*/
+	var p admin.ParamsUserRole
+	g, err := h.common(ctx, &p)
+	if err != nil {
+		return
+	}
+
+	exist := h.logic.Exist(g.NewContext(ctx), &admin.DomainAppRole{Rid: p.Rid})
+	if !exist {
+		g.Json(http.StatusOK, e.DomainNotExist, "")
+		return
+	}
+	id := config.NewNodeId()
+	err = h.logic.InsertMany(g.NewContext(ctx), &admin.UserRole{
+		Id:     id,
+		Rid:    p.Rid,
+		Uid:    p.Uid,
+		Status: 1,
+	})
 }

@@ -25,6 +25,19 @@ func (h HttpAdminHandler) AddGroup(ctx app.GContext) {
 	}
 	p.Status = 1
 
+	//查看这个角色是否是这个app的
+	exist = h.logic.Exist(g.NewContext(ctx), &admin.DomainAppRole{
+		Did:    p.Did,
+		Aid:    p.Aid,
+		Rid:    p.Rid,
+		Status: 1,
+	})
+
+	if exist {
+		g.Json(http.StatusOK, e.GroupExist, "")
+		return
+	}
+
 	exist = h.logic.Exist(g.NewContext(ctx), &admin.Group{Did: p.Did, Aid: p.Aid, Name: p.Name})
 	if exist {
 		g.Json(http.StatusOK, e.GroupExist, "")

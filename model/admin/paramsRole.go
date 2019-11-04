@@ -36,3 +36,8 @@ type ParamsRoleName struct {
 	Rid  int64  `json:"rid"`
 	Name string `json:"name"`
 }
+
+type ParamsUserRole struct {
+	Uid int64 `json:"uid" binding:"required"`
+	Rid int64 `json:"rid" binding:"required"`
+}
